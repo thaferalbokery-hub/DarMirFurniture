@@ -1,0 +1,136 @@
+/* DarMir Luxury Furniture - Main Stylesheet */
+
+:root {
+    --color-ivory: #FFFFF0;
+    --color-beige: #F5F0E8;
+    --color-dark-brown: #3E2723;
+    --color-charcoal: #333333;
+    --color-gold: #C9A84C;
+    --color-gold-light: #D4AF37;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--color-charcoal);
+    background-color: #FAFAFA;
+}
+
+/* Navbar */
+.bg-dark-brown {
+    background-color: var(--color-dark-brown) !important;
+}
+
+.text-gold {
+    color: var(--color-gold) !important;
+}
+
+.text-muted-light {
+    color: #B0A090 !important;
+}
+
+.btn-gold {
+    background-color: var(--color-gold);
+    border-color: var(--color-gold);
+    color: #fff;
+    font-weight: 500;
+}
+
+.btn-gold:hover {
+    background-color: var(--color-gold-light);
+    border-color: var(--color-gold-light);
+    color: #fff;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--color-dark-brown) 0%, #5D4037 100%);
+    min-height: 500px;
+    padding: 100px 0;
+}
+
+.hero-section h1 {
+    font-size: 4rem;
+    letter-spacing: 3px;
+}
+
+/* Section Titles */
+.section-title {
+    position: relative;
+    padding-bottom: 15px;
+    font-weight: 700;
+    color: var(--color-dark-brown);
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--color-gold);
+}
+
+/* Product Cards */
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+}
+
+.product-image {
+    height: 250px;
+    object-fit: cover;
+}
+
+.product-image-placeholder {
+    height: 250px;
+}
+
+/* Category Cards */
+.category-card {
+    transition: transform 0.3s ease;
+    border-radius: 12px;
+}
+
+.category-card:hover {
+    transform: translateY(-3px);
+}
+
+/* Thumbnail Images */
+.thumbnail-img {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    height: 80px;
+    object-fit: cover;
+}
+
+.thumbnail-img:hover {
+    opacity: 1;
+}
+
+/* Footer */
+footer {
+    background-color: var(--color-dark-brown) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 350px;
+        padding: 60px 0;
+    }
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    .product-image {
+        height: 180px;
+    }
+}

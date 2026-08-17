@@ -1,0 +1,67 @@
+/* DarMir Admin Dashboard Styles */
+
+:root {
+    --color-gold: #C9A84C;
+}
+
+.text-gold {
+    color: var(--color-gold) !important;
+}
+
+.btn-gold {
+    background-color: var(--color-gold);
+    border-color: var(--color-gold);
+    color: #fff;
+}
+
+.btn-gold:hover {
+    background-color: #D4AF37;
+    border-color: #D4AF37;
+    color: #fff;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.sidebar .nav-link {
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 2px;
+    font-size: 0.9rem;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+/* Cards */
+.card {
+    border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+        min-height: auto;
+    }
+    .main-content {
+        margin-left: 0;
+    }
+}

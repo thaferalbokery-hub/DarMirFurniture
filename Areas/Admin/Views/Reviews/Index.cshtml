@@ -1,0 +1,45 @@
+@model List<Review>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Reviews (@Model.Count)</h4>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Customer</th>
+                    <th>Rating</th>
+                    <th>Comment</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var review in Model)
+                {
+                    <tr>
+                        <td>@review.Product?.Name</td>
+                        <td>@review.User?.FirstName @review.User?.LastName</td>
+                        <td>
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="fas fa-star @(i <= review.Rating ? "text-warning" : "text-muted") small"></i>
+                            }
+                        </td>
+                        <td>@(review.Comment.Length > 50 ? review.Comment[..50] + "..." : review.Comment)</td>
+                        <td>@review.CreatedAt.ToString("MMM dd, yyyy")</td>
+                        <td>
+                            <form asp-action="Delete" asp-route-id="@review.Id" method="post" class="d-inline" onsubmit="return confirm('Delete this review?')">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

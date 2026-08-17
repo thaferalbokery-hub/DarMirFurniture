@@ -1,0 +1,46 @@
+@model List<Category>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Categories (@Model.Count)</h4>
+    <a asp-action="Create" class="btn btn-gold"><i class="fas fa-plus me-1"></i>Add Category</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr><th>Image</th><th>Name</th><th>Description</th><th>Order</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var cat in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(cat.ImageUrl))
+                            {
+                                <img src="@cat.ImageUrl" class="rounded" style="width:40px;height:40px;object-fit:cover;" />
+                            }
+                            else
+                            {
+                                <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:40px;height:40px;"><i class="fas fa-tag text-muted"></i></div>
+                            }
+                        </td>
+                        <td><strong>@cat.Name</strong></td>
+                        <td>@(cat.Description?.Length > 40 ? cat.Description[..40] + "..." : cat.Description)</td>
+                        <td>@cat.DisplayOrder</td>
+                        <td>
+                            <span class="badge @(cat.IsActive ? "bg-success" : "bg-secondary")">@(cat.IsActive ? "Active" : "Inactive")</span>
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@cat.Id" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
+                            <form asp-action="Delete" asp-route-id="@cat.Id" method="post" class="d-inline" onsubmit="return confirm('Delete this category?')">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

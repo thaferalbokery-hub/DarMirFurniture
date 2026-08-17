@@ -1,0 +1,68 @@
+@model Order
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Orders" asp-action="Index">My Orders</a></li>
+            <li class="breadcrumb-item active">@Model.OrderNumber</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-body">
+                    <h5 class="fw-bold mb-3">Order Items</h5>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr><th>Product</th><th class="text-center">Qty</th><th class="text-end">Price</th><th class="text-end">Subtotal</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <tr>
+                                    <td>@item.ProductName</td>
+                                    <td class="text-center">@item.Quantity</td>
+                                    <td class="text-end">@item.UnitPrice.ToString("N0") SAR</td>
+                                    <td class="text-end">@item.Subtotal.ToString("N0") SAR</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr><td colspan="3" class="text-end">Subtotal:</td><td class="text-end">@Model.Subtotal.ToString("N0") SAR</td></tr>
+                            <tr><td colspan="3" class="text-end">Shipping:</td><td class="text-end">@(Model.ShippingCost == 0 ? "Free" : $"{Model.ShippingCost:N0} SAR")</td></tr>
+                            <tr class="fw-bold"><td colspan="3" class="text-end">Total:</td><td class="text-end text-gold">@Model.Total.ToString("N0") SAR</td></tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h6 class="fw-bold mb-3">Order Info</h6>
+                    <p><strong>Order #:</strong> @Model.OrderNumber</p>
+                    <p><strong>Date:</strong> @Model.OrderDate.ToString("MMM dd, yyyy")</p>
+                    <p><strong>Status:</strong>
+                        @{
+                            var statusClass = Model.Status switch
+                            {
+                                OrderStatus.Pending => "bg-warning text-dark",
+                                OrderStatus.Processing => "bg-info",
+                                OrderStatus.Shipped => "bg-primary",
+                                OrderStatus.Delivered => "bg-success",
+                                OrderStatus.Cancelled => "bg-danger",
+                                _ => "bg-secondary"
+                            };
+                        }
+                        <span class="badge @statusClass">@Model.Status</span>
+                    </p>
+                    <hr />
+                    <p><strong>Ship to:</strong> @Model.FullName</p>
+                    <p>@Model.Address, @Model.City</p>
+                    <p><strong>Phone:</strong> @Model.Phone</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

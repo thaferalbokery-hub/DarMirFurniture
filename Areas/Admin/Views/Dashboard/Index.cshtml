@@ -1,0 +1,122 @@
+@model DashboardViewModel
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div><h3 class="mb-0">@Model.TotalProducts</h3><small>Products</small></div>
+                    <i class="fas fa-box fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div><h3 class="mb-0">@Model.TotalOrders</h3><small>Orders</small></div>
+                    <i class="fas fa-shopping-bag fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div><h3 class="mb-0">@Model.TotalCustomers</h3><small>Customers</small></div>
+                    <i class="fas fa-users fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm bg-warning text-dark">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div><h3 class="mb-0">@Model.TotalSales.ToString("N0")</h3><small>Total Sales (SAR)</small></div>
+                    <i class="fas fa-coins fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <h4 class="text-warning">@Model.PendingOrders</h4>
+                <small class="text-muted">Pending Orders</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <h4 class="text-success">@Model.DeliveredOrders</h4>
+                <small class="text-muted">Delivered</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <h4 class="text-danger">@Model.LowStockProducts</h4>
+                <small class="text-muted">Low Stock</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center">
+                <h4>@Model.TotalCategories</h4>
+                <small class="text-muted">Categories</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white"><h6 class="mb-0">Recent Orders</h6></div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead><tr><th>Order #</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+                    <tbody>
+                        @foreach (var order in Model.RecentOrders)
+                        {
+                            <tr>
+                                <td>@order.OrderNumber</td>
+                                <td>@order.CustomerName</td>
+                                <td>@order.Total.ToString("N0") SAR</td>
+                                <td><span class="badge bg-secondary">@order.Status</span></td>
+                                <td>@order.OrderDate.ToString("MMM dd")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white"><h6 class="mb-0">Top Products</h6></div>
+            <div class="card-body">
+                @foreach (var product in Model.TopProducts)
+                {
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>@product.Name</span>
+                        <span class="badge bg-primary">@product.TotalSold sold</span>
+                    </div>
+                }
+                @if (!Model.TopProducts.Any())
+                {
+                    <p class="text-muted text-center">No sales data yet.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

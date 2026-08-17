@@ -1,0 +1,105 @@
+@model ProductViewModel
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Price" class="form-label"></label>
+                            <input asp-for="Price" class="form-control" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="DiscountPrice" class="form-label"></label>
+                            <input asp-for="DiscountPrice" class="form-control" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="StockQuantity" class="form-label"></label>
+                            <input asp-for="StockQuantity" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CategoryId" class="form-label"></label>
+                            <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select">
+                                <option value="">-- Select Category --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="BrandId" class="form-label"></label>
+                            <select asp-for="BrandId" asp-items="ViewBag.Brands" class="form-select">
+                                <option value="">-- Select Brand --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Material" class="form-label"></label>
+                            <input asp-for="Material" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Color" class="form-label"></label>
+                            <input asp-for="Color" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Dimensions</label>
+                        <input asp-for="Width" class="form-control mb-2" placeholder="Width (cm)" />
+                        <input asp-for="Height" class="form-control mb-2" placeholder="Height (cm)" />
+                        <input asp-for="Depth" class="form-control mb-2" placeholder="Depth (cm)" />
+                        <input asp-for="Weight" class="form-control" placeholder="Weight (kg)" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ReorderLevel" class="form-label"></label>
+                        <input asp-for="ReorderLevel" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check mb-2">
+                            <input asp-for="IsAvailable" class="form-check-input" />
+                            <label asp-for="IsAvailable" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input asp-for="IsFeatured" class="form-check-input" />
+                            <label asp-for="IsFeatured" class="form-check-label"></label>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="IsNew" class="form-check-input" />
+                            <label asp-for="IsNew" class="form-check-label"></label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Images" class="form-label"></label>
+                        <input asp-for="Images" type="file" class="form-control" multiple accept="image/*" />
+                        <small class="text-muted">Max 5MB per image. JPG, PNG, WebP.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-gold"><i class="fas fa-save me-1"></i>Create Product</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

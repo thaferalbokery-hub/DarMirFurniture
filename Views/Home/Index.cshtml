@@ -1,0 +1,89 @@
+@{
+    var featured = ViewData["FeaturedProducts"] as List<ProductListItemViewModel> ?? new();
+    var newProducts = ViewData["NewProducts"] as List<ProductListItemViewModel> ?? new();
+    var discounted = ViewData["DiscountedProducts"] as List<ProductListItemViewModel> ?? new();
+    var categories = ViewData["Categories"] as List<Category> ?? new();
+}
+
+<!-- Hero Section -->
+<section class="hero-section text-white text-center d-flex align-items-center">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-3">DarMir</h1>
+        <p class="lead mb-2">Luxury Furniture & Home Decor</p>
+        <p class="mb-4">Transform your space with our premium collection of handcrafted furniture</p>
+        <a asp-controller="Products" asp-action="Index" class="btn btn-gold btn-lg px-5">
+            <i class="fas fa-shopping-bag me-2"></i>Shop Now
+        </a>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-4 section-title">Shop by Category</h2>
+        <div class="row g-3">
+            @foreach (var category in categories.Take(8))
+            {
+                <div class="col-6 col-md-3">
+                    <a asp-controller="Products" asp-action="Index" asp-route-CategoryId="@category.Id" class="text-decoration-none">
+                        <div class="card border-0 shadow-sm text-center p-3 category-card">
+                            <i class="fas fa-chair fa-2x text-gold mb-2"></i>
+                            <h6 class="mb-0">@category.Name</h6>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+@if (featured.Any())
+{
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4 section-title">Featured Furniture</h2>
+            <div class="row">
+                @foreach (var product in featured)
+                {
+                    <partial name="_ProductCard" model="product" />
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Discounted Products -->
+@if (discounted.Any())
+{
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4 section-title">Special Offers</h2>
+            <div class="row">
+                @foreach (var product in discounted)
+                {
+                    <partial name="_ProductCard" model="product" />
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- New Arrivals -->
+@if (newProducts.Any())
+{
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4 section-title">New Arrivals</h2>
+            <div class="row">
+                @foreach (var product in newProducts)
+                {
+                    <partial name="_ProductCard" model="product" />
+                }
+            </div>
+            <div class="text-center mt-3">
+                <a asp-controller="Products" asp-action="Index" asp-route-IsNew="true" class="btn btn-outline-dark">View All New Arrivals</a>
+            </div>
+        </div>
+    </section>
+}

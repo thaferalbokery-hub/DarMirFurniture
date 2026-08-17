@@ -1,0 +1,66 @@
+@model CustomerReportViewModel
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm text-center">
+            <div class="card-body">
+                <h3>@Model.TotalCustomers</h3>
+                <small class="text-muted">Total Customers</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white"><h6 class="mb-0">Top Customers</h6></div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead><tr><th>Customer</th><th>Email</th><th class="text-center">Orders</th><th class="text-end">Total Spent</th></tr></thead>
+                    <tbody>
+                        @foreach (var c in Model.TopCustomers)
+                        {
+                            <tr>
+                                <td>@c.CustomerName</td>
+                                <td>@c.Email</td>
+                                <td class="text-center">@c.OrderCount</td>
+                                <td class="text-end">@c.TotalSpent.ToString("N0") SAR</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (!Model.TopCustomers.Any())
+                {
+                    <p class="text-muted text-center">No customer data yet.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white"><h6 class="mb-0">Recent Customers</h6></div>
+            <div class="card-body">
+                @foreach (var c in Model.RecentCustomers)
+                {
+                    <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
+                        <div>
+                            <strong>@c.Name</strong><br />
+                            <small class="text-muted">@c.Email</small>
+                        </div>
+                        <small class="text-muted">@c.JoinedDate.ToString("MMM dd")</small>
+                    </div>
+                }
+                @if (!Model.RecentCustomers.Any())
+                {
+                    <p class="text-muted text-center">No recent customers.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Sales" class="btn btn-outline-primary me-2"><i class="fas fa-chart-bar me-1"></i>Sales Report</a>
+    <a asp-action="Products" class="btn btn-outline-primary"><i class="fas fa-box me-1"></i>Product Report</a>
+</div>

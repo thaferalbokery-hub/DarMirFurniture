@@ -1,0 +1,115 @@
+@model ProductFilterViewModel
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active">Products</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Filters</h5>
+                    <form asp-controller="Products" asp-action="Index" method="get">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Search</label>
+                            <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control form-control-sm" placeholder="Search..." />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Category</label>
+                            <select name="CategoryId" class="form-select form-select-sm">
+                                <option value="">All Categories</option>
+                                @foreach (var cat in Model.Categories)
+                                {
+                                    <option value="@cat.Id" selected="@(Model.CategoryId == cat.Id)">@cat.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Brand</label>
+                            <select name="BrandId" class="form-select form-select-sm">
+                                <option value="">All Brands</option>
+                                @foreach (var brand in Model.Brands)
+                                {
+                                    <option value="@brand.Id" selected="@(Model.BrandId == brand.Id)">@brand.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Price Range</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" name="MinPrice" value="@Model.MinPrice" class="form-control form-control-sm" placeholder="Min" />
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" name="MaxPrice" value="@Model.MaxPrice" class="form-control form-control-sm" placeholder="Max" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Sort By</label>
+                            <select name="SortBy" class="form-select form-select-sm">
+                                <option value="newest" selected="@(Model.SortBy == "newest")">Newest</option>
+                                <option value="price_asc" selected="@(Model.SortBy == "price_asc")">Price: Low to High</option>
+                                <option value="price_desc" selected="@(Model.SortBy == "price_desc")">Price: High to Low</option>
+                                <option value="name" selected="@(Model.SortBy == "name")">Name</option>
+                                <option value="rating" selected="@(Model.SortBy == "rating")">Rating</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-gold w-100">Apply Filters</button>
+                        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Clear</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="col-md-9">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <p class="mb-0 text-muted">Showing @Model.Products.Count of @Model.TotalCount products</p>
+            </div>
+
+            @if (Model.Products.Any())
+            {
+                <div class="row">
+                    @foreach (var product in Model.Products)
+                    {
+                        <partial name="_ProductCard" model="product" />
+                    }
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <nav class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.Page ? "active" : "")">
+                                    <a class="page-link" asp-controller="Products" asp-action="Index"
+                                       asp-route-Page="@i"
+                                       asp-route-SearchTerm="@Model.SearchTerm"
+                                       asp-route-CategoryId="@Model.CategoryId"
+                                       asp-route-BrandId="@Model.BrandId"
+                                       asp-route-SortBy="@Model.SortBy">@i</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h5>No products found</h5>
+                    <p class="text-muted">Try adjusting your filters or search term.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
