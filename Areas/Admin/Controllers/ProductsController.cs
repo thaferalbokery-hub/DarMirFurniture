@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.Services;
 using DarMirFurniture.ViewModels;
@@ -26,16 +27,16 @@ public class ProductsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "Manage Products";
-        ViewData["PageTitle"] = "Products";
+        ViewBag.Title = AppText.ManageProducts;
+        ViewData["PageTitle"] = AppText.Products;
         var products = await _productService.GetAllProductsAsync();
         return View(products);
     }
 
     public async Task<IActionResult> Create()
     {
-        ViewBag.Title = "Create Product";
-        ViewData["PageTitle"] = "Create Product";
+        ViewBag.Title = AppText.CreateProduct;
+        ViewData["PageTitle"] = AppText.CreateProduct;
         await LoadDropdowns();
         return View(new ProductViewModel());
     }
@@ -46,12 +47,14 @@ public class ProductsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewBag.Title = AppText.CreateProduct;
+            ViewData["PageTitle"] = AppText.CreateProduct;
             await LoadDropdowns();
             return View(model);
         }
 
         await _productService.CreateProductAsync(model);
-        TempData["Success"] = "تم إنشاء المنتج بنجاح";
+        TempData["Success"] = AppText.ProductCreated;
         return RedirectToAction(nameof(Index));
     }
 
@@ -60,8 +63,8 @@ public class ProductsController : Controller
         var product = await _productService.GetProductByIdAsync(id);
         if (product == null) return NotFound();
 
-        ViewBag.Title = "Edit Product";
-        ViewData["PageTitle"] = "Edit Product";
+        ViewBag.Title = AppText.EditProduct;
+        ViewData["PageTitle"] = AppText.EditProduct;
         await LoadDropdowns();
 
         var model = new ProductViewModel
@@ -96,12 +99,17 @@ public class ProductsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewBag.Title = AppText.EditProduct;
+            ViewData["PageTitle"] = AppText.EditProduct;
             await LoadDropdowns();
+
+            var existing = await _productService.GetProductByIdAsync(model.Id);
+            ViewData["ExistingImages"] = existing?.ProductImages.ToList() ?? new List<ProductImage>();
             return View(model);
         }
 
         await _productService.UpdateProductAsync(model);
-        TempData["Success"] = "تم تحديث المنتج بنجاح";
+        TempData["Success"] = AppText.ProductUpdated;
         return RedirectToAction(nameof(Index));
     }
 
@@ -110,7 +118,7 @@ public class ProductsController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         await _productService.DeleteProductAsync(id);
-        TempData["Success"] = "تم حذف المنتج بنجاح";
+        TempData["Success"] = AppText.ProductDeleted;
         return RedirectToAction(nameof(Index));
     }
 
@@ -118,17 +126,8 @@ public class ProductsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteImage(int imageId, int productId)
     {
-        var product = await _productService.GetProductByIdAsync(productId);
-        if (product == null) return NotFound();
-
-        var image = product.ProductImages.FirstOrDefault(i => i.Id == imageId);
-        if (image != null)
-        {
-            await _imageService.DeleteImageAsync(image.ImageUrl);
-            product.ProductImages.Remove(image);
-        }
-
-        TempData["Success"] = "تم حذف الصورة";
+        await _productService.DeleteProductImageAsync(imageId, productId);
+        TempData["Success"] = AppText.ImageDeleted;
         return RedirectToAction(nameof(Edit), new { id = productId });
     }
 

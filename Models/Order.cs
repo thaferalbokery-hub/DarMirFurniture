@@ -23,51 +23,51 @@ public class Order
 
     [Required]
     [StringLength(20)]
-    [Display(Name = "Order Number")]
+    [Display(Name = "رقم الطلب")]
     public string OrderNumber { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "الاسم الكامل مطلوب")]
     [StringLength(200)]
-    [Display(Name = "Full Name")]
+    [Display(Name = "الاسم الكامل")]
     public string FullName { get; set; } = string.Empty;
 
-    [Required]
-    [Phone]
+    [Required(ErrorMessage = "رقم الهاتف مطلوب")]
+    [Phone(ErrorMessage = "رقم الهاتف غير صالح")]
     [StringLength(20)]
-    [Display(Name = "Phone")]
+    [Display(Name = "رقم الهاتف")]
     public string Phone { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "المدينة مطلوبة")]
     [StringLength(100)]
-    [Display(Name = "City")]
+    [Display(Name = "المدينة")]
     public string City { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "العنوان مطلوب")]
     [StringLength(500)]
-    [Display(Name = "Address")]
+    [Display(Name = "العنوان")]
     public string Address { get; set; } = string.Empty;
 
     [StringLength(500)]
-    [Display(Name = "Shipping Address")]
+    [Display(Name = "عنوان الشحن")]
     public string? ShippingAddress { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]
-    [Display(Name = "Subtotal")]
+    [Display(Name = "المجموع الفرعي")]
     public decimal Subtotal { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]
-    [Display(Name = "Shipping Cost")]
+    [Display(Name = "تكلفة الشحن")]
     public decimal ShippingCost { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]
-    [Display(Name = "Total")]
+    [Display(Name = "الإجمالي")]
     public decimal Total { get; set; }
 
-    [Display(Name = "Status")]
+    [Display(Name = "الحالة")]
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
     [StringLength(500)]
-    [Display(Name = "Notes")]
+    [Display(Name = "ملاحظات")]
     public string? Notes { get; set; }
 
     public DateTime OrderDate { get; set; } = DateTime.UtcNow;

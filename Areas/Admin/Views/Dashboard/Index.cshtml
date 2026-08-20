@@ -5,7 +5,7 @@
         <div class="card border-0 shadow-sm bg-primary text-white">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <div><h3 class="mb-0">@Model.TotalProducts</h3><small>Products</small></div>
+                    <div><h3 class="mb-0 numeric-value">@Model.TotalProducts</h3><small>@AppText.Products</small></div>
                     <i class="fas fa-box fa-2x opacity-50"></i>
                 </div>
             </div>
@@ -15,7 +15,7 @@
         <div class="card border-0 shadow-sm bg-success text-white">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <div><h3 class="mb-0">@Model.TotalOrders</h3><small>Orders</small></div>
+                    <div><h3 class="mb-0 numeric-value">@Model.TotalOrders</h3><small>@AppText.Orders</small></div>
                     <i class="fas fa-shopping-bag fa-2x opacity-50"></i>
                 </div>
             </div>
@@ -25,7 +25,7 @@
         <div class="card border-0 shadow-sm bg-info text-white">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <div><h3 class="mb-0">@Model.TotalCustomers</h3><small>Customers</small></div>
+                    <div><h3 class="mb-0 numeric-value">@Model.TotalCustomers</h3><small>العملاء</small></div>
                     <i class="fas fa-users fa-2x opacity-50"></i>
                 </div>
             </div>
@@ -35,7 +35,7 @@
         <div class="card border-0 shadow-sm bg-warning text-dark">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
-                    <div><h3 class="mb-0">@Model.TotalSales.ToString("N0")</h3><small>Total Sales (SAR)</small></div>
+                    <div><h3 class="mb-0 price-value">@Model.TotalSales.ToYer()</h3><small>إجمالي المبيعات</small></div>
                     <i class="fas fa-coins fa-2x opacity-50"></i>
                 </div>
             </div>
@@ -47,32 +47,32 @@
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
             <div class="card-body text-center">
-                <h4 class="text-warning">@Model.PendingOrders</h4>
-                <small class="text-muted">Pending Orders</small>
+                <h4 class="text-warning numeric-value">@Model.PendingOrders</h4>
+                <small class="text-muted">طلبات قيد الانتظار</small>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
             <div class="card-body text-center">
-                <h4 class="text-success">@Model.DeliveredOrders</h4>
-                <small class="text-muted">Delivered</small>
+                <h4 class="text-success numeric-value">@Model.DeliveredOrders</h4>
+                <small class="text-muted">طلبات تم تسليمها</small>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
             <div class="card-body text-center">
-                <h4 class="text-danger">@Model.LowStockProducts</h4>
-                <small class="text-muted">Low Stock</small>
+                <h4 class="text-danger numeric-value">@Model.LowStockProducts</h4>
+                <small class="text-muted">منتجات قاربت على النفاد</small>
             </div>
         </div>
     </div>
     <div class="col-md-3">
         <div class="card border-0 shadow-sm">
             <div class="card-body text-center">
-                <h4>@Model.TotalCategories</h4>
-                <small class="text-muted">Categories</small>
+                <h4 class="numeric-value">@Model.TotalCategories</h4>
+                <small class="text-muted">@AppText.Categories</small>
             </div>
         </div>
     </div>
@@ -81,40 +81,64 @@
 <div class="row g-3">
     <div class="col-md-8">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white"><h6 class="mb-0">Recent Orders</h6></div>
+            <div class="card-header bg-white"><h6 class="mb-0">أحدث الطلبات</h6></div>
             <div class="card-body">
                 <table class="table table-sm">
-                    <thead><tr><th>Order #</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>@AppText.OrderNumber</th>
+                            <th>@AppText.Customer</th>
+                            <th>@AppText.Total</th>
+                            <th>@AppText.Status</th>
+                            <th>@AppText.Date</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         @foreach (var order in Model.RecentOrders)
                         {
                             <tr>
                                 <td>@order.OrderNumber</td>
                                 <td>@order.CustomerName</td>
-                                <td>@order.Total.ToString("N0") SAR</td>
-                                <td><span class="badge bg-secondary">@order.Status</span></td>
-                                <td>@order.OrderDate.ToString("MMM dd")</td>
+                                <td class="price-value">@order.Total.ToYer()</td>
+                                <td>
+                                    @{
+                                        var parsedStatus = Enum.TryParse<OrderStatus>(order.Status, out var statusValue);
+                                    }
+                                    @if (parsedStatus)
+                                    {
+                                        <span class="badge @statusValue.BadgeClass()">@statusValue.ToArabic()</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@order.Status</span>
+                                    }
+                                </td>
+                                <td class="numeric-value">@order.OrderDate.ToString(AppText.DateFormat)</td>
                             </tr>
                         }
                     </tbody>
                 </table>
+                @if (!Model.RecentOrders.Any())
+                {
+                    <p class="text-muted text-center mb-0">لا توجد طلبات بعد.</p>
+                }
             </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white"><h6 class="mb-0">Top Products</h6></div>
+            <div class="card-header bg-white"><h6 class="mb-0">المنتجات الأكثر مبيعاً</h6></div>
             <div class="card-body">
                 @foreach (var product in Model.TopProducts)
                 {
                     <div class="d-flex justify-content-between mb-2">
                         <span>@product.Name</span>
-                        <span class="badge bg-primary">@product.TotalSold sold</span>
+                        <span class="badge bg-primary">تم بيع @product.TotalSold</span>
                     </div>
                 }
                 @if (!Model.TopProducts.Any())
                 {
-                    <p class="text-muted text-center">No sales data yet.</p>
+                    <p class="text-muted text-center mb-0">لا توجد بيانات مبيعات بعد.</p>
                 }
             </div>
         </div>

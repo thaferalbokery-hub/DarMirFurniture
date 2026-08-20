@@ -1,7 +1,7 @@
 @model List<Order>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Orders (@Model.Count)</h4>
+    <h4 class="mb-0">@AppText.Orders (@Model.Count)</h4>
 </div>
 
 <div class="card border-0 shadow-sm">
@@ -9,13 +9,13 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Order #</th>
-                    <th>Customer</th>
-                    <th>Items</th>
-                    <th>Total</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Actions</th>
+                    <th>@AppText.OrderNumber</th>
+                    <th>@AppText.Customer</th>
+                    <th>عدد المنتجات</th>
+                    <th>@AppText.Total</th>
+                    <th>@AppText.Status</th>
+                    <th>@AppText.Date</th>
+                    <th>@AppText.Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,30 +23,21 @@
                 {
                     <tr>
                         <td><strong>@order.OrderNumber</strong></td>
-                        <td>@order.FullName<br /><small class="text-muted">@order.User?.Email</small></td>
-                        <td>@order.OrderItems.Count items</td>
-                        <td><strong>@order.Total.ToString("N0") SAR</strong></td>
+                        <td>@order.FullName<br /><small class="text-muted numeric-value">@order.User?.Email</small></td>
+                        <td class="numeric-value">@order.OrderItems.Count</td>
+                        <td><strong class="price-value">@order.Total.ToYer()</strong></td>
+                        <td><span class="badge @order.Status.BadgeClass()">@order.Status.ToArabic()</span></td>
+                        <td class="numeric-value">@order.OrderDate.ToString(AppText.DateFormat)</td>
                         <td>
-                            @{
-                                var statusClass = order.Status switch
-                                {
-                                    OrderStatus.Pending => "bg-warning text-dark",
-                                    OrderStatus.Processing => "bg-info",
-                                    OrderStatus.Shipped => "bg-primary",
-                                    OrderStatus.Delivered => "bg-success",
-                                    OrderStatus.Cancelled => "bg-danger",
-                                    _ => "bg-secondary"
-                                };
-                            }
-                            <span class="badge @statusClass">@order.Status</span>
-                        </td>
-                        <td>@order.OrderDate.ToString("MMM dd, yyyy")</td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                            <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-primary" title="@AppText.Details"><i class="fas fa-eye"></i></a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center mb-0">لا توجد طلبات بعد.</p>
+        }
     </div>
 </div>

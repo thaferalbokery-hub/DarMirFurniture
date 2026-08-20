@@ -15,7 +15,7 @@
             }
             @if (Model.IsNew)
             {
-                <span class="badge bg-success position-absolute top-0 start-0 m-2">New</span>
+                <span class="badge bg-success position-absolute top-0 start-0 m-2">@AppText.New</span>
             }
             @if (Model.DiscountPrice.HasValue)
             {
@@ -32,12 +32,12 @@
             <div class="mt-auto pt-2">
                 @if (Model.DiscountPrice.HasValue)
                 {
-                    <span class="text-decoration-line-through text-muted me-2">@Model.Price.ToString("N0") SAR</span>
-                    <span class="fw-bold text-danger">@Model.DiscountPrice.Value.ToString("N0") SAR</span>
+                    <span class="text-decoration-line-through text-muted me-2 price-value">@Model.Price.ToYer()</span>
+                    <span class="fw-bold text-danger price-value">@Model.DiscountPrice.ToYer()</span>
                 }
                 else
                 {
-                    <span class="fw-bold">@Model.Price.ToString("N0") SAR</span>
+                    <span class="fw-bold price-value">@Model.Price.ToYer()</span>
                 }
             </div>
             @if (Model.ReviewCount > 0)
@@ -60,7 +60,7 @@
         </div>
         <div class="card-footer bg-white border-0 pt-0">
             <a asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-gold btn-sm w-100">
-                <i class="fas fa-eye me-1"></i>View Details
+                <i class="fas fa-eye ms-1 me-1"></i>عرض التفاصيل
             </a>
         </div>
     </div>

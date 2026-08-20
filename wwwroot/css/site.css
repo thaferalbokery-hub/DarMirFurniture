@@ -1,4 +1,4 @@
-/* DarMir Luxury Furniture - Main Stylesheet */
+/* DarMir Luxury Furniture - Main Stylesheet (Arabic / RTL) */
 
 :root {
     --color-ivory: #FFFFF0;
@@ -7,12 +7,46 @@
     --color-charcoal: #333333;
     --color-gold: #C9A84C;
     --color-gold-light: #D4AF37;
+    --font-arabic: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+}
+
+html {
+    direction: rtl;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-arabic);
     color: var(--color-charcoal);
     background-color: #FAFAFA;
+    direction: rtl;
+    text-align: right;
+}
+
+h1, h2, h3, h4, h5, h6,
+.btn,
+.navbar,
+.form-label,
+.form-control,
+.form-select,
+input,
+textarea,
+select,
+button,
+table,
+.badge,
+.alert,
+.dropdown-menu,
+.breadcrumb,
+.pagination {
+    font-family: var(--font-arabic);
+}
+
+/* Keep numeric/currency values readable inside RTL text */
+.price-value,
+.numeric-value {
+    direction: ltr;
+    unicode-bidi: embed;
+    display: inline-block;
 }
 
 /* Navbar */
@@ -32,7 +66,7 @@ body {
     background-color: var(--color-gold);
     border-color: var(--color-gold);
     color: #fff;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .btn-gold:hover {
@@ -50,7 +84,9 @@ body {
 
 .hero-section h1 {
     font-size: 4rem;
-    letter-spacing: 3px;
+    font-weight: 900;
+    /* Arabic script must not be letter-spaced - it breaks glyph joining */
+    letter-spacing: normal;
 }
 
 /* Section Titles */
@@ -114,6 +150,20 @@ body {
 
 .thumbnail-img:hover {
     opacity: 1;
+}
+
+/* RTL: breadcrumb separator should point to the left */
+.breadcrumb-item + .breadcrumb-item::before {
+    float: right;
+    padding-left: 0.5rem;
+    padding-right: 0;
+    content: "\\";
+}
+
+/* RTL: flip directional arrow icons */
+.fa-arrow-left,
+.fa-arrow-right {
+    transform: scaleX(-1);
 }
 
 /* Footer */

@@ -14,7 +14,7 @@ public class ImageService : IImageService
     public async Task<string> UploadImageAsync(IFormFile file, string folder = "products")
     {
         if (!IsValidImage(file))
-            throw new InvalidOperationException("Invalid image file");
+            throw new InvalidOperationException(DarMirFurniture.Localization.AppText.InvalidImage);
 
         var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads", folder);
         Directory.CreateDirectory(uploadsFolder);

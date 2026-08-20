@@ -15,5 +15,6 @@ public interface IProductService
     Task CreateProductAsync(ProductViewModel model);
     Task UpdateProductAsync(ProductViewModel model);
     Task DeleteProductAsync(int id);
+    Task DeleteProductImageAsync(int imageId, int productId);
     Task<int> GetTotalCountAsync();
 }

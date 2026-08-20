@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -20,16 +21,16 @@ public class CategoriesController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "Manage Categories";
-        ViewData["PageTitle"] = "Categories";
+        ViewBag.Title = AppText.ManageCategories;
+        ViewData["PageTitle"] = AppText.Categories;
         var categories = await _categoryService.GetAllAsync();
         return View(categories);
     }
 
     public IActionResult Create()
     {
-        ViewBag.Title = "Create Category";
-        ViewData["PageTitle"] = "Create Category";
+        ViewBag.Title = AppText.CreateCategory;
+        ViewData["PageTitle"] = AppText.CreateCategory;
         return View(new Category());
     }
 
@@ -37,7 +38,12 @@ public class CategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Category category, IFormFile? image)
     {
-        if (!ModelState.IsValid) return View(category);
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Title = AppText.CreateCategory;
+            ViewData["PageTitle"] = AppText.CreateCategory;
+            return View(category);
+        }
 
         if (image != null && _imageService.IsValidImage(image))
         {
@@ -45,7 +51,7 @@ public class CategoriesController : Controller
         }
 
         await _categoryService.CreateAsync(category);
-        TempData["Success"] = "تم إنشاء الفئة بنجاح";
+        TempData["Success"] = AppText.CategoryCreated;
         return RedirectToAction(nameof(Index));
     }
 
@@ -54,8 +60,8 @@ public class CategoriesController : Controller
         var category = await _categoryService.GetByIdAsync(id);
         if (category == null) return NotFound();
 
-        ViewBag.Title = "Edit Category";
-        ViewData["PageTitle"] = "Edit Category";
+        ViewBag.Title = AppText.EditCategory;
+        ViewData["PageTitle"] = AppText.EditCategory;
         return View(category);
     }
 
@@ -63,7 +69,12 @@ public class CategoriesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Category category, IFormFile? image)
     {
-        if (!ModelState.IsValid) return View(category);
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Title = AppText.EditCategory;
+            ViewData["PageTitle"] = AppText.EditCategory;
+            return View(category);
+        }
 
         if (image != null && _imageService.IsValidImage(image))
         {
@@ -73,7 +84,7 @@ public class CategoriesController : Controller
         }
 
         await _categoryService.UpdateAsync(category);
-        TempData["Success"] = "تم تحديث الفئة بنجاح";
+        TempData["Success"] = AppText.CategoryUpdated;
         return RedirectToAction(nameof(Index));
     }
 
@@ -82,7 +93,7 @@ public class CategoriesController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         await _categoryService.DeleteAsync(id);
-        TempData["Success"] = "تم حذف الفئة بنجاح";
+        TempData["Success"] = AppText.CategoryDeleted;
         return RedirectToAction(nameof(Index));
     }
 }

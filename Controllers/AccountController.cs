@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +21,7 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Login(string? returnUrl = null)
     {
-        ViewBag.Title = "Login";
+        ViewBag.Title = AppText.Login;
         return View(new LoginViewModel { ReturnUrl = returnUrl });
     }
 
@@ -28,6 +29,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
+        ViewBag.Title = AppText.Login;
         if (!ModelState.IsValid) return View(model);
 
         var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
@@ -41,21 +43,22 @@ public class AccountController : Controller
             return LocalRedirect(model.ReturnUrl ?? "/");
         }
 
-        ModelState.AddModelError(string.Empty, "بيانات تسجيل الدخول غير صحيحة");
+        ModelState.AddModelError(string.Empty, AppText.InvalidLogin);
         return View(model);
     }
 
     [HttpGet]
     public IActionResult Register()
     {
-        ViewBag.Title = "Register";
-        return View();
+        ViewBag.Title = AppText.Register;
+        return View(new RegisterViewModel());
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
+        ViewBag.Title = AppText.Register;
         if (!ModelState.IsValid) return View(model);
 
         var user = new ApplicationUser
@@ -73,7 +76,7 @@ public class AccountController : Controller
         {
             await _userManager.AddToRoleAsync(user, "Customer");
             await _signInManager.SignInAsync(user, isPersistent: false);
-            TempData["Success"] = "تم إنشاء الحساب بنجاح";
+            TempData["Success"] = AppText.AccountCreated;
             return RedirectToAction("Index", "Home");
         }
 
@@ -96,7 +99,7 @@ public class AccountController : Controller
     [Authorize]
     public async Task<IActionResult> Profile()
     {
-        ViewBag.Title = "My Profile";
+        ViewBag.Title = AppText.MyProfile;
         var user = await _userManager.GetUserAsync(User);
         if (user == null) return NotFound();
 
@@ -118,6 +121,7 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Profile(ProfileViewModel model)
     {
+        ViewBag.Title = AppText.MyProfile;
         if (!ModelState.IsValid) return View(model);
 
         var user = await _userManager.GetUserAsync(User);
@@ -131,13 +135,13 @@ public class AccountController : Controller
         user.ShippingAddress = model.ShippingAddress;
 
         await _userManager.UpdateAsync(user);
-        TempData["Success"] = "تم تحديث الملف الشخصي بنجاح";
+        TempData["Success"] = AppText.ProfileUpdated;
         return View(model);
     }
 
     public IActionResult AccessDenied()
     {
-        ViewBag.Title = "Access Denied";
+        ViewBag.Title = AppText.AccessDenied;
         return View();
     }
 }

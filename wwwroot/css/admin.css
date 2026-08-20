@@ -1,7 +1,33 @@
-/* DarMir Admin Dashboard Styles */
+/* DarMir Admin Dashboard Styles (Arabic / RTL) */
 
 :root {
     --color-gold: #C9A84C;
+    --font-arabic: 'Cairo', 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+}
+
+html {
+    direction: rtl;
+}
+
+body {
+    font-family: var(--font-arabic);
+    direction: rtl;
+    text-align: right;
+}
+
+h1, h2, h3, h4, h5, h6,
+.btn, .navbar, .form-label, .form-control,
+.form-select, input, textarea, select, button,
+table, .badge, .alert, .dropdown-menu {
+    font-family: var(--font-arabic);
+}
+
+/* Keep numeric/currency values readable inside RTL text */
+.price-value,
+.numeric-value {
+    direction: ltr;
+    unicode-bidi: embed;
+    display: inline-block;
 }
 
 .text-gold {
@@ -12,6 +38,7 @@
     background-color: var(--color-gold);
     border-color: var(--color-gold);
     color: #fff;
+    font-weight: 600;
 }
 
 .btn-gold:hover {
@@ -20,13 +47,14 @@
     color: #fff;
 }
 
-/* Sidebar */
+/* Sidebar - pinned to the right for RTL */
 .sidebar {
     width: 250px;
     min-height: 100vh;
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
+    left: auto;
     overflow-y: auto;
     z-index: 1000;
 }
@@ -36,15 +64,17 @@
     border-radius: 6px;
     margin-bottom: 2px;
     font-size: 0.9rem;
+    text-align: right;
 }
 
 .sidebar .nav-link:hover {
     background-color: rgba(255,255,255,0.1);
 }
 
-/* Main Content */
+/* Main Content - offset from the right sidebar */
 .main-content {
-    margin-left: 250px;
+    margin-right: 250px;
+    margin-left: 0;
     min-height: 100vh;
     background-color: #f8f9fa;
 }
@@ -52,6 +82,12 @@
 /* Cards */
 .card {
     border-radius: 10px;
+}
+
+/* RTL: flip directional arrow icons */
+.fa-arrow-left,
+.fa-arrow-right {
+    transform: scaleX(-1);
 }
 
 /* Responsive */
@@ -62,6 +98,6 @@
         min-height: auto;
     }
     .main-content {
-        margin-left: 0;
+        margin-right: 0;
     }
 }

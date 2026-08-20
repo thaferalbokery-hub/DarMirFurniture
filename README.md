@@ -1,248 +1,205 @@
-# DarMir Luxury Furniture & Home Decor
+# دار مير للأثاث الفاخر
 
-## Complete ASP.NET Core MVC E-Commerce System
+## نظام متجر إلكتروني متكامل بـ ASP.NET Core MVC
 
-### Project Overview
-DarMir is a full-featured e-commerce management system specialized in luxury furniture and home decoration products. Built with ASP.NET Core MVC (.NET 9), Entity Framework Core, SQL Server, and ASP.NET Core Identity.
-
----
-
-## Technologies Used
-- **Framework:** ASP.NET Core MVC (.NET 9)
-- **Language:** C#
-- **ORM:** Entity Framework Core 9
-- **Database:** SQL Server (LocalDB)
-- **Authentication:** ASP.NET Core Identity
-- **Frontend:** Razor Views, Bootstrap 5, Font Awesome 6
-- **Validation:** Data Annotations + jQuery Validation
+### نظرة عامة
+"دار مير" نظام إدارة متجر إلكتروني متخصص في الأثاث الفاخر ومستلزمات الديكور المنزلي.
+الواجهة عربية بالكامل مع اتجاه من اليمين إلى اليسار (RTL)، والعملة الافتراضية هي **الريال اليمني (YER — ر.ي)**.
 
 ---
 
-## Installation Guide
+## التقنيات المستخدمة
+- **الإطار:** ASP.NET Core MVC (.NET 9)
+- **اللغة:** C#
+- **الـ ORM:** Entity Framework Core 9
+- **قاعدة البيانات:** SQL Server (LocalDB)
+- **المصادقة:** ASP.NET Core Identity
+- **الواجهة:** Razor Views + Bootstrap 5 RTL + Font Awesome 6
+- **الخطوط:** Cairo و Tajawal
+- **التحقق:** Data Annotations + jQuery Validation (رسائل عربية)
 
-### Prerequisites
+---
+
+## دليل التشغيل
+
+### المتطلبات
 - .NET 9 SDK
-- SQL Server (LocalDB or full instance)
-- Visual Studio 2022 or VS Code
+- SQL Server (LocalDB أو نسخة كاملة)
+- Visual Studio 2022 أو VS Code
 
-### Steps
+### الخطوات
 
-1. **Clone/Download the project**
-
-2. **Restore packages:**
+1. **استرجاع الحزم:**
 ```bash
 cd DarMirFurniture
 dotnet restore
 ```
 
-3. **Update connection string** in `appsettings.json` if needed
+2. **تعديل نص الاتصال** في `appsettings.json` إذا لزم الأمر
 
-4. **Create database migrations:**
+3. **إنشاء الترحيل الأولي:**
 ```bash
 dotnet ef migrations add InitialCreate
 ```
 
-5. **Apply migrations:**
+4. **تطبيق الترحيل على قاعدة البيانات:**
 ```bash
 dotnet ef database update
 ```
 
-6. **Run the application:**
+5. **تشغيل التطبيق:**
 ```bash
 dotnet run
 ```
 
-7. **Access the application:**
-   - Store: https://localhost:5001
-   - Admin: https://localhost:5001/Admin/Dashboard
+6. **الوصول:**
+   - المتجر: https://localhost:5001
+   - لوحة الإدارة: https://localhost:5001/Admin/Dashboard
 
 ---
 
-## Default Accounts
+## الحسابات الافتراضية
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@darmir.com | Admin@123 |
-| Customer | customer@darmir.com | Customer@123 |
-
----
-
-## Database Models (18 Models)
-
-1. ApplicationUser - Extended Identity user
-2. UserProfile - One-to-One with ApplicationUser
-3. Product - Main product entity
-4. Category - Product categories
-5. Brand - Product brands
-6. FurnitureType - Types of furniture
-7. Material - Product materials
-8. Color - Available colors
-9. ProductCategory - Many-to-Many junction
-10. ProductImage - Product images
-11. ProductVariant - Product variants (Color + Material)
-12. Inventory - Stock management
-13. Cart - Shopping cart
-14. CartItem - Cart items
-15. Order - Customer orders
-16. OrderItem - Order line items
-17. Review - Product reviews
-18. Favorite - User favorites
-19. Address - User addresses
+| الدور | البريد الإلكتروني | كلمة المرور |
+|------|-------------------|-------------|
+| مدير | admin@darmir.com | Admin@123 |
+| عميل | customer@darmir.com | Customer@123 |
 
 ---
 
-## Database Relationships
+## كيانات قاعدة البيانات (10 كيانات)
 
-### One-to-One
-- ApplicationUser ↔ UserProfile
+1. **ApplicationUser** — مستخدم Identity موسّع (اسم، هاتف، مدينة، عنوان)
+2. **Category** — فئات المنتجات
+3. **Brand** — العلامات التجارية
+4. **Product** — المنتج (السعر، سعر الخصم، المادة، اللون، الأبعاد، المخزون)
+5. **ProductImage** — صور المنتج مع تحديد الصورة الرئيسية
+6. **Cart** — سلة المشتريات الخاصة بالمستخدم
+7. **CartItem** — عناصر السلة
+8. **Order** — الطلب (بيانات الشحن، المجموع الفرعي، الشحن، الإجمالي، الحالة)
+9. **OrderItem** — بنود الطلب
+10. **Review** — مراجعات وتقييمات المنتجات
+
+---
+
+## العلاقات
+
+### واحد لواحد (1:1)
 - ApplicationUser ↔ Cart
-- Product ↔ Inventory
 
-### One-to-Many
+### واحد لمتعدد (1:N)
+- Category → Products
 - Brand → Products
-- FurnitureType → Products
-- Material → Products
 - Product → ProductImages
-- Product → ProductVariants
 - Product → Reviews
+- Product → CartItems
+- Product → OrderItems
 - ApplicationUser → Orders
 - ApplicationUser → Reviews
 - Order → OrderItems
 - Cart → CartItems
 
-### Many-to-Many
-- Product ↔ Category (via ProductCategory junction entity)
-- ProductVariant connects Product + Color + Material
+---
+
+## التعريب والعملة
+
+- الصفحة الرئيسية والقوالب تستخدم `lang="ar" dir="rtl"` مع Bootstrap RTL.
+- النصوص المشتركة مركزية في `Localization/AppText.cs`.
+- رسائل أخطاء Identity معرّبة عبر `Localization/ArabicIdentityErrorDescriber.cs`.
+- إعدادات العملة والتنسيق في `Localization/CurrencySettings.cs`:
+  - رمز العملة: `ر.ي` وكود العملة `YER`
+  - تنسيق موحّد للأسعار عبر `ToYer()` مثال: `25,000 ر.ي`
+  - الشحن المجاني عند بلوغ حد معيّن، وإلا تُطبّق قيمة شحن ثابتة بالريال اليمني
+- ثقافة التطبيق مضبوطة على `ar-YE` في `Program.cs` مع الحفاظ على أرقام لاتينية لضمان صحة الحسابات وربط النماذج.
 
 ---
 
-## Features
+## الوظائف
 
-### Customer Features
-- Browse products with filtering and search
-- View product details with images, dimensions, variants
-- Add/remove favorites
-- Shopping cart with quantity management
-- Checkout with shipping information
-- Order history and tracking
-- Product reviews and ratings
-- Profile management
+### وظائف العميل
+- تصفح المنتجات مع بحث وفلترة (فئة، علامة تجارية، نطاق سعري) وترقيم صفحات
+- صفحة تفاصيل المنتج مع الصور والأبعاد والمواصفات
+- سلة مشتريات مع تعديل الكميات والحذف
+- إتمام الطلب مع بيانات الشحن وحساب الشحن تلقائيًا
+- سجل الطلبات وتتبع حالة الطلب
+- إضافة مراجعة وتقييم للمنتجات
+- إدارة الملف الشخصي
 
-### Admin Features
-- Dashboard with statistics
-- Full CRUD for: Products, Categories, Brands, Furniture Types, Materials, Colors
-- Image upload/delete with GUID naming
-- Inventory management with low-stock alerts
-- Order management with status updates
-- Review management
-- Sales, Product, and Customer reports
+### وظائف الإدارة
+- لوحة تحكم بإحصائيات المنتجات والطلبات والعملاء والمبيعات
+- إدارة كاملة (إضافة/تعديل/حذف) للمنتجات والفئات والعلامات التجارية
+- رفع وحذف صور المنتجات مع أسماء GUID وتعيين الصورة الرئيسية
+- تنبيهات المخزون المنخفض عبر حد إعادة الطلب
+- إدارة الطلبات وتحديث حالاتها
+- إدارة المراجعات
+- تقارير: المبيعات، المنتجات، العملاء
 
 ---
 
-## Project Structure
+## هيكل المشروع
 ```
 DarMirFurniture/
-├── Areas/Admin/Controllers/    # Admin controllers
-├── Areas/Admin/Views/          # Admin Razor views
-├── Controllers/                # Customer controllers
-├── Data/                       # DbContext
-├── Models/                     # Entity models
-├── ViewModels/                 # View models / DTOs
-├── Services/                   # Business logic services
-├── Views/                      # Customer Razor views
-├── Views/Shared/               # Partial views, layouts
-├── Migrations/                 # EF Core migrations
-├── wwwroot/css/                # Stylesheets
-├── wwwroot/js/                 # JavaScript
-├── wwwroot/uploads/            # Uploaded images
-├── Program.cs                  # Application entry point
-├── appsettings.json            # Configuration
-└── DarMirFurniture.csproj      # Project file
+├── Areas/Admin/Controllers/    # متحكمات لوحة الإدارة
+├── Areas/Admin/Views/          # واجهات لوحة الإدارة
+├── Controllers/                # متحكمات المتجر
+├── Data/                       # ApplicationDbContext
+├── Localization/               # AppText, CurrencySettings, أخطاء Identity
+├── Models/                     # الكيانات (10)
+├── ViewModels/                 # نماذج العرض
+├── Services/                   # منطق الأعمال
+├── Views/                      # واجهات المتجر
+├── Views/Shared/               # القوالب والواجهات الجزئية
+├── wwwroot/css/                # site.css و admin.css (RTL)
+├── wwwroot/uploads/products/   # الصور المرفوعة
+├── Program.cs                  # نقطة تشغيل التطبيق
+├── appsettings.json            # الإعدادات
+└── DarMirFurniture.csproj      # ملف المشروع
 ```
 
 ---
 
-## Security Features
-- ASP.NET Core Identity with password hashing
-- Role-based authorization (Admin/Customer)
-- [ValidateAntiForgeryToken] on all POST actions
-- Secure image upload with GUID filenames
-- File type and size validation
-- Ownership validation (users can only access their own data)
-- Server-side and client-side validation
+## الأمان
+- ASP.NET Core Identity مع تشفير كلمات المرور
+- تصريح حسب الأدوار (مدير/عميل)
+- `[ValidateAntiForgeryToken]` على جميع عمليات POST
+- رفع صور آمن بأسماء GUID مع التحقق من النوع والحجم (حتى 5 ميجابايت)
+- التحقق من ملكية البيانات (كل مستخدم يرى طلباته فقط)
+- تحقق من الصحة على الخادم والمتصفح برسائل عربية
 
 ---
 
-## EF Core Features Used
-- DbContext with Fluent API configuration
-- Navigation Properties
-- Include() and ThenInclude() for eager loading
-- Where() for row-level filtering
-- Select() for column-level projection
-- GroupBy(), Sum(), Count(), Average() for reports
-- OrderBy() for sorting
-- Data Annotations for validation
-- Migrations for database versioning
+## ميزات EF Core المستخدمة
+- DbContext مع إعدادات Fluent API
+- خصائص التنقل (Navigation Properties)
+- `Include()` و `ThenInclude()` للتحميل المسبق
+- `Where()` للفلترة و `Select()` للإسقاط
+- `GroupBy()`, `Sum()`, `Count()`, `Average()` للتقارير
+- `OrderBy()` للترتيب
+- Data Annotations للتحقق
+- Migrations لإدارة إصدارات قاعدة البيانات
 
 ---
 
-## Class Diagram
+## جدول التحقق
 
-```
-ApplicationUser (IdentityUser)
-├── 1:1 → UserProfile
-├── 1:1 → Cart → CartItems → Product
-├── 1:N → Orders → OrderItems → Product
-├── 1:N → Reviews → Product
-└── 1:N → Favorites → Product
-
-Product
-├── N:1 → Brand
-├── N:1 → FurnitureType
-├── N:1 → Material
-├── M:N → Categories (via ProductCategory)
-├── 1:N → ProductImages
-├── 1:N → ProductVariants → Color, Material
-├── 1:1 → Inventory
-├── 1:N → Reviews
-└── 1:N → Favorites
-```
-
----
-
-## Audit Verification
-
-| Requirement | Status | Evidence |
-|-------------|--------|----------|
-| 18 Models | ✅ | Models/ folder |
-| 1:1 Relationship | ✅ | User↔Profile, User↔Cart, Product↔Inventory |
-| 1:N Relationship | ✅ | Brand→Products, Order→OrderItems, etc. |
-| M:N Relationship | ✅ | Product↔Category via ProductCategory |
-| Seed Data | ✅ | Services/SeedData.cs |
-| Identity Auth | ✅ | Program.cs, AccountController |
-| Role Authorization | ✅ | [Authorize(Roles="Admin")] |
-| Product CRUD | ✅ | Admin/ProductsController |
-| Category CRUD | ✅ | Admin/CategoriesController |
-| Brand CRUD | ✅ | Admin/BrandsController |
-| FurnitureType CRUD | ✅ | Admin/FurnitureTypesController |
-| Material CRUD | ✅ | Admin/MaterialsController |
-| Color CRUD | ✅ | Admin/ColorsController |
-| Image Upload/Delete | ✅ | ImageService, GUID naming |
-| Search | ✅ | ProductService.GetFilteredProductsAsync |
-| Row Filtering (Where) | ✅ | ProductService filters |
-| Column Projection (Select) | ✅ | ProductListItemViewModel |
-| Include/ThenInclude | ✅ | ProductService, CartService, OrderService |
-| Data Annotations | ✅ | All models |
-| Tag Helpers | ✅ | All views |
-| ViewBag/ViewData | ✅ | Controllers + Views |
-| Partial Views | ✅ | _Navbar, _Footer, _ProductCard |
-| Shopping Cart | ✅ | CartController, CartService |
-| Checkout | ✅ | CartController.Checkout/PlaceOrder |
-| Orders | ✅ | OrdersController, OrderService |
-| Inventory | ✅ | InventoryController, InventoryService |
-| Favorites | ✅ | FavoritesController, FavoriteService |
-| Reviews | ✅ | ProductsController.AddReview |
-| Reports | ✅ | ReportsController, ReportService |
-| Admin Dashboard | ✅ | DashboardController |
-| EF Core Migrations | ✅ | Ready for `dotnet ef migrations add` |
-| SQL Server | ✅ | appsettings.json connection string |
+| المطلب | الحالة | الدليل |
+|--------|--------|--------|
+| 10 كيانات بالضبط | ✅ | مجلد Models/ |
+| علاقة 1:1 | ✅ | ApplicationUser ↔ Cart |
+| علاقة 1:N | ✅ | Category→Products، Order→OrderItems |
+| بذر البيانات | ✅ | Services/SeedData.cs |
+| مصادقة Identity | ✅ | Program.cs، AccountController |
+| تصريح بالأدوار | ✅ | `[Authorize(Roles="Admin")]` |
+| CRUD المنتجات | ✅ | Admin/ProductsController |
+| CRUD الفئات | ✅ | Admin/CategoriesController |
+| CRUD العلامات التجارية | ✅ | Admin/BrandsController |
+| رفع/حذف الصور | ✅ | ImageService + ProductService |
+| البحث والفلترة | ✅ | ProductService |
+| سلة المشتريات | ✅ | CartController، CartService |
+| إتمام الطلب | ✅ | CartController.Checkout/PlaceOrder |
+| الطلبات | ✅ | OrdersController، OrderService |
+| المراجعات | ✅ | ProductsController.AddReview |
+| التقارير | ✅ | Admin/ReportsController، ReportService |
+| لوحة التحكم | ✅ | Admin/DashboardController |
+| واجهة عربية RTL | ✅ | _Layout.cshtml، site.css، admin.css |
+| العملة الريال اليمني | ✅ | Localization/CurrencySettings.cs |

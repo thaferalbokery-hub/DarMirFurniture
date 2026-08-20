@@ -1,4 +1,5 @@
 using DarMirFurniture.Data;
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.ViewModels;
 using Microsoft.EntityFrameworkCore;
@@ -21,18 +22,18 @@ public class OrderService : IOrderService
         var cart = await _cartService.GetOrCreateCartAsync(userId);
 
         if (!cart.CartItems.Any())
-            throw new InvalidOperationException("Cart is empty");
+            throw new InvalidOperationException(AppText.EmptyCartError);
 
         // Validate inventory for all items
         foreach (var item in cart.CartItems)
         {
             var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == item.ProductId);
             if (product == null || product.StockQuantity < item.Quantity)
-                throw new InvalidOperationException($"Insufficient stock for product: {item.Product.Name}");
+                throw new InvalidOperationException(AppText.InsufficientStock(item.Product.Name));
         }
 
         var subtotal = cart.CartItems.Sum(ci => ci.Subtotal);
-        var shippingCost = subtotal >= 5000 ? 0 : 50m;
+        var shippingCost = CurrencySettings.CalculateShipping(subtotal);
 
         var order = new Order
         {

@@ -16,12 +16,12 @@ public class Review
 
     [Required(ErrorMessage = "التقييم مطلوب")]
     [Range(1, 5, ErrorMessage = "التقييم يجب أن يكون بين 1 و 5")]
-    [Display(Name = "Rating")]
+    [Display(Name = "التقييم")]
     public int Rating { get; set; }
 
     [Required(ErrorMessage = "التعليق مطلوب")]
     [StringLength(1000, ErrorMessage = "التعليق يجب أن لا يتجاوز 1000 حرف")]
-    [Display(Name = "Comment")]
+    [Display(Name = "التعليق")]
     public string Comment { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

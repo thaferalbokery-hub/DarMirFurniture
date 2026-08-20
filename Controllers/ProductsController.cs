@@ -1,8 +1,9 @@
+using DarMirFurniture.Localization;
+using DarMirFurniture.Models;
 using DarMirFurniture.Services;
 using DarMirFurniture.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using DarMirFurniture.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DarMirFurniture.Controllers;
@@ -22,7 +23,7 @@ public class ProductsController : Controller
 
     public async Task<IActionResult> Index(ProductFilterViewModel filter)
     {
-        ViewBag.Title = "Our Products";
+        ViewBag.Title = AppText.ProductsPageTitle;
         var result = await _productService.GetFilteredProductsAsync(filter);
         return View(result);
     }
@@ -45,6 +46,7 @@ public class ProductsController : Controller
     {
         if (!ModelState.IsValid)
         {
+            TempData["Error"] = "يجب اختيار التقييم وكتابة تعليق قبل الإرسال";
             return RedirectToAction(nameof(Details), new { id = model.ProductId });
         }
 
@@ -52,7 +54,7 @@ public class ProductsController : Controller
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
         await _reviewService.CreateReviewAsync(userId, model);
-        TempData["Success"] = "تم إضافة المراجعة بنجاح";
+        TempData["Success"] = AppText.ReviewCreated;
         return RedirectToAction(nameof(Details), new { id = model.ProductId });
     }
 
@@ -65,7 +67,7 @@ public class ProductsController : Controller
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
         await _reviewService.DeleteReviewAsync(reviewId, userId);
-        TempData["Success"] = "تم حذف المراجعة";
+        TempData["Success"] = AppText.ReviewDeleted;
         return RedirectToAction(nameof(Details), new { id = productId });
     }
 }

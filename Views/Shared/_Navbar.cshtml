@@ -5,7 +5,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark-brown sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">
-            <i class="fas fa-couch me-2"></i>DarMir
+            <i class="fas fa-couch ms-1 me-2"></i>@AppText.SiteName
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
@@ -13,22 +13,22 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">@AppText.Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Products" asp-action="Index">Products</a>
+                    <a class="nav-link" asp-controller="Products" asp-action="Index">@AppText.Products</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
+                    <a class="nav-link" asp-controller="Home" asp-action="About">@AppText.About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
+                    <a class="nav-link" asp-controller="Home" asp-action="Contact">@AppText.Contact</a>
                 </li>
             </ul>
 
             <form class="d-flex me-3" asp-controller="Products" asp-action="Index" method="get">
                 <div class="input-group input-group-sm">
-                    <input type="text" name="SearchTerm" class="form-control" placeholder="Search products..." />
+                    <input type="text" name="SearchTerm" class="form-control" placeholder="ابحث عن منتج..." aria-label="@AppText.Search" />
                     <button class="btn btn-gold" type="submit"><i class="fas fa-search"></i></button>
                 </div>
             </form>
@@ -37,7 +37,7 @@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Cart" asp-action="Index">
+                        <a class="nav-link" asp-controller="Cart" asp-action="Index" title="@AppText.Cart">
                             <i class="fas fa-shopping-cart"></i>
                         </a>
                     </li>
@@ -48,16 +48,16 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             @if (User.IsInRole("Admin"))
                             {
-                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="fas fa-tachometer-alt ms-1 me-2"></i>@AppText.Dashboard</a></li>
                                 <li><hr class="dropdown-divider" /></li>
                             }
-                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="fas fa-user-edit me-2"></i>Profile</a></li>
-                            <li><a class="dropdown-item" asp-controller="Orders" asp-action="Index"><i class="fas fa-box me-2"></i>My Orders</a></li>
+                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="fas fa-user-edit ms-1 me-2"></i>@AppText.MyProfile</a></li>
+                            <li><a class="dropdown-item" asp-controller="Orders" asp-action="Index"><i class="fas fa-box ms-1 me-2"></i>@AppText.MyOrders</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
                                 <form asp-controller="Account" asp-action="Logout" method="post">
                                     @Html.AntiForgeryToken()
-                                    <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+                                    <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt ms-1 me-2"></i>@AppText.Logout</button>
                                 </form>
                             </li>
                         </ul>
@@ -66,10 +66,10 @@
                 else
                 {
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">@AppText.Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-gold btn-sm ms-2 px-3" asp-controller="Account" asp-action="Register">Register</a>
+                        <a class="nav-link btn btn-gold btn-sm ms-2 px-3" asp-controller="Account" asp-action="Register">@AppText.Register</a>
                     </li>
                 }
             </ul>

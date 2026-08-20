@@ -16,21 +16,21 @@ public class OrderItem
 
     [Required]
     [StringLength(200)]
-    [Display(Name = "Product Name")]
+    [Display(Name = "اسم المنتج")]
     public string ProductName { get; set; } = string.Empty;
 
     [Required]
     [Range(1, 100)]
-    [Display(Name = "Quantity")]
+    [Display(Name = "الكمية")]
     public int Quantity { get; set; }
 
     [Required]
     [Column(TypeName = "decimal(18,2)")]
-    [Display(Name = "Unit Price")]
+    [Display(Name = "سعر الوحدة")]
     public decimal UnitPrice { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]
-    [Display(Name = "Subtotal")]
+    [Display(Name = "المجموع الفرعي")]
     public decimal Subtotal { get; set; }
 
     // Navigation Properties

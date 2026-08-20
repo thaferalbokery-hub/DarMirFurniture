@@ -16,11 +16,11 @@ public class CartItem
 
     [Required]
     [Range(1, 100, ErrorMessage = "الكمية يجب أن تكون بين 1 و 100")]
-    [Display(Name = "Quantity")]
+    [Display(Name = "الكمية")]
     public int Quantity { get; set; } = 1;
 
     [Column(TypeName = "decimal(18,2)")]
-    [Display(Name = "Unit Price")]
+    [Display(Name = "سعر الوحدة")]
     public decimal UnitPrice { get; set; }
 
     public DateTime AddedAt { get; set; } = DateTime.UtcNow;

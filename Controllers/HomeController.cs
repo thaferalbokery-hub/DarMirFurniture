@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "DarMir - Luxury Furniture & Home Decor";
+        ViewBag.Title = AppText.HomePageTitle;
         ViewData["FeaturedProducts"] = await _productService.GetFeaturedProductsAsync(8);
         ViewData["NewProducts"] = await _productService.GetNewProductsAsync(4);
         ViewData["DiscountedProducts"] = await _productService.GetDiscountedProductsAsync(4);
@@ -26,18 +27,19 @@ public class HomeController : Controller
 
     public IActionResult About()
     {
-        ViewBag.Title = "About DarMir";
+        ViewBag.Title = AppText.AboutPageTitle;
         return View();
     }
 
     public IActionResult Contact()
     {
-        ViewBag.Title = "Contact Us";
+        ViewBag.Title = AppText.ContactPageTitle;
         return View();
     }
 
     public IActionResult Error()
     {
+        ViewBag.Title = "حدث خطأ";
         return View();
     }
 }

@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,24 +18,24 @@ public class ReportsController : Controller
 
     public async Task<IActionResult> Sales(DateTime? startDate, DateTime? endDate)
     {
-        ViewBag.Title = "Sales Report";
-        ViewData["PageTitle"] = "Sales Report";
+        ViewBag.Title = AppText.SalesReport;
+        ViewData["PageTitle"] = AppText.SalesReport;
         var report = await _reportService.GetSalesReportAsync(startDate, endDate);
         return View(report);
     }
 
     public async Task<IActionResult> Products()
     {
-        ViewBag.Title = "Product Report";
-        ViewData["PageTitle"] = "Product Report";
+        ViewBag.Title = AppText.ProductsReport;
+        ViewData["PageTitle"] = AppText.ProductsReport;
         var report = await _reportService.GetProductReportAsync();
         return View(report);
     }
 
     public async Task<IActionResult> Customers()
     {
-        ViewBag.Title = "Customer Report";
-        ViewData["PageTitle"] = "Customer Report";
+        ViewBag.Title = AppText.CustomersReport;
+        ViewData["PageTitle"] = AppText.CustomersReport;
         var report = await _reportService.GetCustomerReportAsync();
         return View(report);
     }

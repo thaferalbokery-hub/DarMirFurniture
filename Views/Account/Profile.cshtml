@@ -5,10 +5,10 @@
         <div class="col-md-8">
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
-                    <h3 class="fw-bold mb-4"><i class="fas fa-user-edit me-2"></i>My Profile</h3>
+                    <h3 class="fw-bold mb-4"><i class="fas fa-user-edit ms-1 me-2"></i>@AppText.MyProfile</h3>
                     <form asp-action="Profile" method="post">
                         @Html.AntiForgeryToken()
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="FirstName" class="form-label"></label>
@@ -23,27 +23,31 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="Email" class="form-label"></label>
-                            <input asp-for="Email" class="form-control" readonly />
+                            <input asp-for="Email" class="form-control" readonly dir="ltr" />
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label asp-for="PhoneNumber" class="form-label"></label>
-                                <input asp-for="PhoneNumber" class="form-control" />
+                                <input asp-for="PhoneNumber" class="form-control" dir="ltr" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label asp-for="City" class="form-label"></label>
                                 <input asp-for="City" class="form-control" />
+                                <span asp-validation-for="City" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Address" class="form-label"></label>
                             <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                            <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="ShippingAddress" class="form-label"></label>
-                            <textarea asp-for="ShippingAddress" class="form-control" rows="2" placeholder="Leave empty if same as above"></textarea>
+                            <textarea asp-for="ShippingAddress" class="form-control" rows="2" placeholder="اتركه فارغاً إذا كان نفس العنوان أعلاه"></textarea>
+                            <span asp-validation-for="ShippingAddress" class="text-danger"></span>
                         </div>
-                        <button type="submit" class="btn btn-gold"><i class="fas fa-save me-1"></i>Update Profile</button>
+                        <button type="submit" class="btn btn-gold"><i class="fas fa-save ms-1 me-1"></i>تحديث الملف الشخصي</button>
                     </form>
                 </div>
             </div>

@@ -13,16 +13,17 @@ public class ProductImage
 
     [Required]
     [StringLength(500)]
+    [Display(Name = "رابط الصورة")]
     public string ImageUrl { get; set; } = string.Empty;
 
     [StringLength(200)]
-    [Display(Name = "Alt Text")]
+    [Display(Name = "النص البديل")]
     public string? AltText { get; set; }
 
-    [Display(Name = "Is Primary")]
+    [Display(Name = "الصورة الرئيسية")]
     public bool IsPrimary { get; set; }
 
-    [Display(Name = "Display Order")]
+    [Display(Name = "ترتيب العرض")]
     public int DisplayOrder { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

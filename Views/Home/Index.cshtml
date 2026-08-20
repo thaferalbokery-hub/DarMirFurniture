@@ -8,11 +8,11 @@
 <!-- Hero Section -->
 <section class="hero-section text-white text-center d-flex align-items-center">
     <div class="container">
-        <h1 class="display-3 fw-bold mb-3">DarMir</h1>
-        <p class="lead mb-2">Luxury Furniture & Home Decor</p>
-        <p class="mb-4">Transform your space with our premium collection of handcrafted furniture</p>
+        <h1 class="display-3 fw-bold mb-3">@AppText.SiteName</h1>
+        <p class="lead mb-2">@AppText.SiteTagline</p>
+        <p class="mb-4">اجعل مساحتك أكثر أناقة مع مجموعتنا الفاخرة من الأثاث المصنوع بعناية</p>
         <a asp-controller="Products" asp-action="Index" class="btn btn-gold btn-lg px-5">
-            <i class="fas fa-shopping-bag me-2"></i>Shop Now
+            <i class="fas fa-shopping-bag ms-1 me-2"></i>تسوّق الآن
         </a>
     </div>
 </section>
@@ -20,7 +20,7 @@
 <!-- Categories Section -->
 <section class="py-5 bg-light">
     <div class="container">
-        <h2 class="text-center mb-4 section-title">Shop by Category</h2>
+        <h2 class="text-center mb-4 section-title">تسوّق حسب الفئة</h2>
         <div class="row g-3">
             @foreach (var category in categories.Take(8))
             {
@@ -42,7 +42,7 @@
 {
     <section class="py-5">
         <div class="container">
-            <h2 class="text-center mb-4 section-title">Featured Furniture</h2>
+            <h2 class="text-center mb-4 section-title">أثاث مميز</h2>
             <div class="row">
                 @foreach (var product in featured)
                 {
@@ -58,7 +58,7 @@
 {
     <section class="py-5 bg-light">
         <div class="container">
-            <h2 class="text-center mb-4 section-title">Special Offers</h2>
+            <h2 class="text-center mb-4 section-title">عروض خاصة</h2>
             <div class="row">
                 @foreach (var product in discounted)
                 {
@@ -74,7 +74,7 @@
 {
     <section class="py-5">
         <div class="container">
-            <h2 class="text-center mb-4 section-title">New Arrivals</h2>
+            <h2 class="text-center mb-4 section-title">وصل حديثاً</h2>
             <div class="row">
                 @foreach (var product in newProducts)
                 {
@@ -82,7 +82,7 @@
                 }
             </div>
             <div class="text-center mt-3">
-                <a asp-controller="Products" asp-action="Index" asp-route-IsNew="true" class="btn btn-outline-dark">View All New Arrivals</a>
+                <a asp-controller="Products" asp-action="Index" asp-route-IsNew="true" class="btn btn-outline-dark">عرض كل الوصولات الجديدة</a>
             </div>
         </div>
     </section>

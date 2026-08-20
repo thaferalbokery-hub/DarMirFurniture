@@ -1,7 +1,7 @@
 @model CheckoutViewModel
 
 <div class="container py-4">
-    <h3 class="fw-bold mb-4"><i class="fas fa-credit-card me-2"></i>Checkout</h3>
+    <h3 class="fw-bold mb-4"><i class="fas fa-credit-card ms-1 me-2"></i>@AppText.Checkout</h3>
 
     <form asp-action="PlaceOrder" method="post">
         @Html.AntiForgeryToken()
@@ -9,8 +9,8 @@
             <div class="col-md-7">
                 <div class="card border-0 shadow-sm mb-3">
                     <div class="card-body">
-                        <h5 class="fw-bold mb-3">Shipping Information</h5>
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                        <h5 class="fw-bold mb-3">بيانات الشحن</h5>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
                         <div class="mb-3">
                             <label asp-for="FullName" class="form-label"></label>
@@ -34,11 +34,13 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="ShippingAddress" class="form-label"></label>
-                            <textarea asp-for="ShippingAddress" class="form-control" rows="2" placeholder="Leave empty if same as above"></textarea>
+                            <textarea asp-for="ShippingAddress" class="form-control" rows="2" placeholder="اتركه فارغاً إذا كان نفس العنوان أعلاه"></textarea>
+                            <span asp-validation-for="ShippingAddress" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Notes" class="form-label"></label>
-                            <textarea asp-for="Notes" class="form-control" rows="2" placeholder="Any special instructions..."></textarea>
+                            <textarea asp-for="Notes" class="form-control" rows="2" placeholder="أي ملاحظات أو تعليمات خاصة..."></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
@@ -46,30 +48,30 @@
             <div class="col-md-5">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <h5 class="fw-bold mb-3">Order Summary</h5>
+                        <h5 class="fw-bold mb-3">ملخص الطلب</h5>
                         @foreach (var item in Model.CartItems)
                         {
                             <div class="d-flex justify-content-between mb-2">
-                                <span>@item.Product.Name x@item.Quantity</span>
-                                <span>@item.Subtotal.ToString("N0") SAR</span>
+                                <span>@item.Product?.Name × @item.Quantity</span>
+                                <span class="price-value">@item.Subtotal.ToYer()</span>
                             </div>
                         }
                         <hr />
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Subtotal</span>
-                            <span>@Model.Subtotal.ToString("N0") SAR</span>
+                            <span>@AppText.Subtotal</span>
+                            <span class="price-value">@Model.Subtotal.ToYer()</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Shipping</span>
-                            <span>@(Model.ShippingCost == 0 ? "Free" : $"{Model.ShippingCost:N0} SAR")</span>
+                            <span>@AppText.Shipping</span>
+                            <span class="price-value">@CurrencySettings.FormatShipping(Model.ShippingCost)</span>
                         </div>
                         <hr />
                         <div class="d-flex justify-content-between mb-3">
-                            <strong class="fs-5">Total</strong>
-                            <strong class="fs-5 text-gold">@Model.Total.ToString("N0") SAR</strong>
+                            <strong class="fs-5">@AppText.Total</strong>
+                            <strong class="fs-5 text-gold price-value">@Model.Total.ToYer()</strong>
                         </div>
                         <button type="submit" class="btn btn-gold w-100 py-2">
-                            <i class="fas fa-check me-2"></i>Place Order
+                            <i class="fas fa-check ms-1 me-2"></i>تأكيد الطلب
                         </button>
                     </div>
                 </div>

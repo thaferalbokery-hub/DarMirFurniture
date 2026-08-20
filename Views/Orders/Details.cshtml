@@ -1,9 +1,9 @@
 @model Order
 
 <div class="container py-4">
-    <nav aria-label="breadcrumb">
+    <nav aria-label="مسار التنقل">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-controller="Orders" asp-action="Index">My Orders</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Orders" asp-action="Index">@AppText.MyOrders</a></li>
             <li class="breadcrumb-item active">@Model.OrderNumber</li>
         </ol>
     </nav>
@@ -12,10 +12,15 @@
         <div class="col-md-8">
             <div class="card border-0 shadow-sm mb-3">
                 <div class="card-body">
-                    <h5 class="fw-bold mb-3">Order Items</h5>
+                    <h5 class="fw-bold mb-3">منتجات الطلب</h5>
                     <table class="table table-sm">
                         <thead>
-                            <tr><th>Product</th><th class="text-center">Qty</th><th class="text-end">Price</th><th class="text-end">Subtotal</th></tr>
+                            <tr>
+                                <th>@AppText.Product</th>
+                                <th class="text-center">@AppText.Quantity</th>
+                                <th class="text-end">@AppText.Price</th>
+                                <th class="text-end">@AppText.Subtotal</th>
+                            </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model.OrderItems)
@@ -23,15 +28,15 @@
                                 <tr>
                                     <td>@item.ProductName</td>
                                     <td class="text-center">@item.Quantity</td>
-                                    <td class="text-end">@item.UnitPrice.ToString("N0") SAR</td>
-                                    <td class="text-end">@item.Subtotal.ToString("N0") SAR</td>
+                                    <td class="text-end price-value">@item.UnitPrice.ToYer()</td>
+                                    <td class="text-end price-value">@item.Subtotal.ToYer()</td>
                                 </tr>
                             }
                         </tbody>
                         <tfoot>
-                            <tr><td colspan="3" class="text-end">Subtotal:</td><td class="text-end">@Model.Subtotal.ToString("N0") SAR</td></tr>
-                            <tr><td colspan="3" class="text-end">Shipping:</td><td class="text-end">@(Model.ShippingCost == 0 ? "Free" : $"{Model.ShippingCost:N0} SAR")</td></tr>
-                            <tr class="fw-bold"><td colspan="3" class="text-end">Total:</td><td class="text-end text-gold">@Model.Total.ToString("N0") SAR</td></tr>
+                            <tr><td colspan="3" class="text-end">@AppText.Subtotal:</td><td class="text-end price-value">@Model.Subtotal.ToYer()</td></tr>
+                            <tr><td colspan="3" class="text-end">@AppText.Shipping:</td><td class="text-end price-value">@CurrencySettings.FormatShipping(Model.ShippingCost)</td></tr>
+                            <tr class="fw-bold"><td colspan="3" class="text-end">@AppText.Total:</td><td class="text-end text-gold price-value">@Model.Total.ToYer()</td></tr>
                         </tfoot>
                     </table>
                 </div>
@@ -40,27 +45,22 @@
         <div class="col-md-4">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <h6 class="fw-bold mb-3">Order Info</h6>
-                    <p><strong>Order #:</strong> @Model.OrderNumber</p>
-                    <p><strong>Date:</strong> @Model.OrderDate.ToString("MMM dd, yyyy")</p>
-                    <p><strong>Status:</strong>
-                        @{
-                            var statusClass = Model.Status switch
-                            {
-                                OrderStatus.Pending => "bg-warning text-dark",
-                                OrderStatus.Processing => "bg-info",
-                                OrderStatus.Shipped => "bg-primary",
-                                OrderStatus.Delivered => "bg-success",
-                                OrderStatus.Cancelled => "bg-danger",
-                                _ => "bg-secondary"
-                            };
-                        }
-                        <span class="badge @statusClass">@Model.Status</span>
-                    </p>
+                    <h6 class="fw-bold mb-3">معلومات الطلب</h6>
+                    <p><strong>@AppText.OrderNumber:</strong> @Model.OrderNumber</p>
+                    <p><strong>@AppText.Date:</strong> <span class="numeric-value">@Model.OrderDate.ToString(AppText.DateFormat)</span></p>
+                    <p><strong>@AppText.Status:</strong> <span class="badge @Model.Status.BadgeClass()">@Model.Status.ToArabic()</span></p>
                     <hr />
-                    <p><strong>Ship to:</strong> @Model.FullName</p>
-                    <p>@Model.Address, @Model.City</p>
-                    <p><strong>Phone:</strong> @Model.Phone</p>
+                    <p><strong>الشحن إلى:</strong> @Model.FullName</p>
+                    <p>@Model.Address، @Model.City</p>
+                    @if (!string.IsNullOrEmpty(Model.ShippingAddress))
+                    {
+                        <p><strong>عنوان الشحن:</strong> @Model.ShippingAddress</p>
+                    }
+                    <p><strong>الهاتف:</strong> <span class="numeric-value">@Model.Phone</span></p>
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        <p><strong>ملاحظات:</strong> @Model.Notes</p>
+                    }
                 </div>
             </div>
         </div>

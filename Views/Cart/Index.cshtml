@@ -1,7 +1,12 @@
 @model Cart
+@{
+    var subtotal = Model.Total;
+    var shippingCost = CurrencySettings.CalculateShipping(subtotal);
+    var grandTotal = subtotal + shippingCost;
+}
 
 <div class="container py-4">
-    <h3 class="fw-bold mb-4"><i class="fas fa-shopping-cart me-2"></i>Shopping Cart</h3>
+    <h3 class="fw-bold mb-4"><i class="fas fa-shopping-cart ms-1 me-2"></i>@AppText.Cart</h3>
 
     @if (Model.CartItems.Any())
     {
@@ -26,24 +31,24 @@
                                 </div>
                                 <div class="col-md-4">
                                     <h6 class="mb-1">@item.Product?.Name</h6>
-                                    <p class="mb-0 fw-bold">@item.UnitPrice.ToString("N0") SAR</p>
+                                    <p class="mb-0 fw-bold price-value">@item.UnitPrice.ToYer()</p>
                                 </div>
                                 <div class="col-md-3">
                                     <form asp-action="UpdateQuantity" method="post" class="d-flex align-items-center">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="cartItemId" value="@item.Id" />
-                                        <input type="number" name="quantity" value="@item.Quantity" min="1" max="99" class="form-control form-control-sm" style="width:70px;" />
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary ms-2"><i class="fas fa-sync"></i></button>
+                                        <input type="number" name="quantity" value="@item.Quantity" min="1" max="99" class="form-control form-control-sm" style="width:70px;" aria-label="@AppText.Quantity" />
+                                        <button type="submit" class="btn btn-sm btn-outline-secondary ms-2" title="@AppText.Update"><i class="fas fa-sync"></i></button>
                                     </form>
                                 </div>
                                 <div class="col-md-2 text-end">
-                                    <strong>@item.Subtotal.ToString("N0") SAR</strong>
+                                    <strong class="price-value">@item.Subtotal.ToYer()</strong>
                                 </div>
                                 <div class="col-md-1 text-end">
                                     <form asp-action="Remove" method="post">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="cartItemId" value="@item.Id" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف"><i class="fas fa-trash"></i></button>
                                     </form>
                                 </div>
                             </div>
@@ -54,25 +59,25 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <h5 class="fw-bold mb-3">Order Summary</h5>
+                        <h5 class="fw-bold mb-3">ملخص الطلب</h5>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Subtotal</span>
-                            <strong>@Model.Total.ToString("N0") SAR</strong>
+                            <span>@AppText.Subtotal</span>
+                            <strong class="price-value">@subtotal.ToYer()</strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Shipping</span>
-                            <span class="text-muted">@(Model.Total >= 5000 ? "Free" : "50 SAR")</span>
+                            <span>@AppText.Shipping</span>
+                            <span class="text-muted price-value">@CurrencySettings.FormatShipping(shippingCost)</span>
                         </div>
                         <hr />
                         <div class="d-flex justify-content-between mb-3">
-                            <strong>Total</strong>
-                            <strong class="text-gold fs-5">@((Model.Total + (Model.Total >= 5000 ? 0 : 50)).ToString("N0")) SAR</strong>
+                            <strong>@AppText.Total</strong>
+                            <strong class="text-gold fs-5 price-value">@grandTotal.ToYer()</strong>
                         </div>
                         <a asp-action="Checkout" class="btn btn-gold w-100">
-                            <i class="fas fa-credit-card me-2"></i>Proceed to Checkout
+                            <i class="fas fa-credit-card ms-1 me-2"></i>@AppText.Checkout
                         </a>
                         <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">
-                            Continue Shopping
+                            @AppText.ContinueShopping
                         </a>
                     </div>
                 </div>
@@ -83,9 +88,9 @@
     {
         <div class="text-center py-5">
             <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
-            <h4>Your cart is empty</h4>
-            <p class="text-muted">Start shopping to add items to your cart.</p>
-            <a asp-controller="Products" asp-action="Index" class="btn btn-gold">Browse Products</a>
+            <h4>سلة المشتريات فارغة</h4>
+            <p class="text-muted">ابدأ التسوق لإضافة منتجات إلى سلتك.</p>
+            <a asp-controller="Products" asp-action="Index" class="btn btn-gold">@AppText.BrowseProducts</a>
         </div>
     }
 </div>

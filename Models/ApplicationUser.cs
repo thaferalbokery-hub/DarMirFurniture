@@ -5,31 +5,31 @@ namespace DarMirFurniture.Models;
 
 public class ApplicationUser : IdentityUser
 {
-    [Required]
+    [Required(ErrorMessage = "الاسم الأول مطلوب")]
     [StringLength(100)]
-    [Display(Name = "First Name")]
+    [Display(Name = "الاسم الأول")]
     public string FirstName { get; set; } = string.Empty;
 
-    [Required]
+    [Required(ErrorMessage = "اسم العائلة مطلوب")]
     [StringLength(100)]
-    [Display(Name = "Last Name")]
+    [Display(Name = "اسم العائلة")]
     public string LastName { get; set; } = string.Empty;
 
-    [Phone]
+    [Phone(ErrorMessage = "رقم الهاتف غير صالح")]
     [StringLength(20)]
-    [Display(Name = "Phone Number")]
+    [Display(Name = "رقم الهاتف")]
     public string? Phone { get; set; }
 
     [StringLength(100)]
-    [Display(Name = "City")]
+    [Display(Name = "المدينة")]
     public string? City { get; set; }
 
     [StringLength(500)]
-    [Display(Name = "Address")]
+    [Display(Name = "العنوان")]
     public string? Address { get; set; }
 
     [StringLength(500)]
-    [Display(Name = "Shipping Address")]
+    [Display(Name = "عنوان الشحن")]
     public string? ShippingAddress { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

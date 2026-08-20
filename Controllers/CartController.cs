@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.Services;
 using DarMirFurniture.ViewModels;
@@ -23,7 +24,7 @@ public class CartController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "Shopping Cart";
+        ViewBag.Title = AppText.Cart;
         var userId = _userManager.GetUserId(User)!;
         var cart = await _cartService.GetOrCreateCartAsync(userId);
         return View(cart);
@@ -35,7 +36,7 @@ public class CartController : Controller
     {
         var userId = _userManager.GetUserId(User)!;
         await _cartService.AddToCartAsync(userId, productId, quantity);
-        TempData["Success"] = "تمت إضافة المنتج إلى السلة";
+        TempData["Success"] = AppText.ProductAddedToCart;
         return RedirectToAction(nameof(Index));
     }
 
@@ -54,25 +55,25 @@ public class CartController : Controller
     {
         var userId = _userManager.GetUserId(User)!;
         await _cartService.RemoveFromCartAsync(userId, cartItemId);
-        TempData["Success"] = "تم حذف المنتج من السلة";
+        TempData["Success"] = AppText.ProductRemovedFromCart;
         return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> Checkout()
     {
-        ViewBag.Title = "Checkout";
+        ViewBag.Title = AppText.Checkout;
         var userId = _userManager.GetUserId(User)!;
         var user = await _userManager.GetUserAsync(User);
         var cart = await _cartService.GetOrCreateCartAsync(userId);
 
         if (!cart.CartItems.Any())
         {
-            TempData["Error"] = "السلة فارغة";
+            TempData["Error"] = AppText.EmptyCartError;
             return RedirectToAction(nameof(Index));
         }
 
         var subtotal = cart.CartItems.Sum(ci => ci.Subtotal);
-        var shippingCost = subtotal >= 5000 ? 0 : 50m;
+        var shippingCost = CurrencySettings.CalculateShipping(subtotal);
 
         var model = new CheckoutViewModel
         {
@@ -94,23 +95,24 @@ public class CartController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> PlaceOrder(CheckoutViewModel model)
     {
+        var userId = _userManager.GetUserId(User)!;
+
         if (!ModelState.IsValid)
         {
-            var userId2 = _userManager.GetUserId(User)!;
-            var cart2 = await _cartService.GetOrCreateCartAsync(userId2);
-            var subtotal2 = cart2.CartItems.Sum(ci => ci.Subtotal);
-            model.CartItems = cart2.CartItems.ToList();
-            model.Subtotal = subtotal2;
-            model.ShippingCost = subtotal2 >= 5000 ? 0 : 50m;
-            model.Total = subtotal2 + model.ShippingCost;
+            ViewBag.Title = AppText.Checkout;
+            var currentCart = await _cartService.GetOrCreateCartAsync(userId);
+            var currentSubtotal = currentCart.CartItems.Sum(ci => ci.Subtotal);
+            model.CartItems = currentCart.CartItems.ToList();
+            model.Subtotal = currentSubtotal;
+            model.ShippingCost = CurrencySettings.CalculateShipping(currentSubtotal);
+            model.Total = currentSubtotal + model.ShippingCost;
             return View("Checkout", model);
         }
 
         try
         {
-            var userId = _userManager.GetUserId(User)!;
             var order = await _orderService.CreateOrderAsync(userId, model);
-            TempData["Success"] = "تم إنشاء الطلب بنجاح";
+            TempData["Success"] = AppText.OrderCreated;
             return RedirectToAction(nameof(OrderConfirmation), new { id = order.Id });
         }
         catch (InvalidOperationException ex)
@@ -122,7 +124,7 @@ public class CartController : Controller
 
     public async Task<IActionResult> OrderConfirmation(int id)
     {
-        ViewBag.Title = "Order Confirmation";
+        ViewBag.Title = AppText.OrderConfirmationTitle;
         var userId = _userManager.GetUserId(User)!;
         var order = await _orderService.GetOrderDetailAsync(id, userId);
         if (order == null) return NotFound();

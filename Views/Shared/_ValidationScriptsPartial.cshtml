@@ -1,3 +1,21 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    // Arabic messages for the built-in client-side validation rules so that
+    // browser-side validation matches the Arabic server-side messages.
+    if (window.jQuery && jQuery.validator) {
+        jQuery.extend(jQuery.validator.messages, {
+            required: "هذا الحقل مطلوب",
+            email: "البريد الإلكتروني غير صالح",
+            number: "الرجاء إدخال رقم صحيح",
+            digits: "الرجاء إدخال أرقام فقط",
+            equalTo: "القيمة غير متطابقة",
+            maxlength: jQuery.validator.format("الحد الأقصى {0} حرف"),
+            minlength: jQuery.validator.format("الحد الأدنى {0} حرف"),
+            range: jQuery.validator.format("الرجاء إدخال قيمة بين {0} و {1}"),
+            max: jQuery.validator.format("الرجاء إدخال قيمة أقل من أو تساوي {0}"),
+            min: jQuery.validator.format("الرجاء إدخال قيمة أكبر من أو تساوي {0}")
+        });
+    }
+</script>

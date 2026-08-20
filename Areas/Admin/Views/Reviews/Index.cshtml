@@ -1,7 +1,7 @@
 @model List<Review>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Reviews (@Model.Count)</h4>
+    <h4 class="mb-0">@AppText.Reviews (@Model.Count)</h4>
 </div>
 
 <div class="card border-0 shadow-sm">
@@ -9,12 +9,12 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Product</th>
-                    <th>Customer</th>
-                    <th>Rating</th>
-                    <th>Comment</th>
-                    <th>Date</th>
-                    <th>Actions</th>
+                    <th>@AppText.Product</th>
+                    <th>@AppText.Customer</th>
+                    <th>التقييم</th>
+                    <th>التعليق</th>
+                    <th>@AppText.Date</th>
+                    <th>@AppText.Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,16 +30,20 @@
                             }
                         </td>
                         <td>@(review.Comment.Length > 50 ? review.Comment[..50] + "..." : review.Comment)</td>
-                        <td>@review.CreatedAt.ToString("MMM dd, yyyy")</td>
+                        <td class="numeric-value">@review.CreatedAt.ToString(AppText.DateFormat)</td>
                         <td>
-                            <form asp-action="Delete" asp-route-id="@review.Id" method="post" class="d-inline" onsubmit="return confirm('Delete this review?')">
+                            <form asp-action="Delete" asp-route-id="@review.Id" method="post" class="d-inline" onsubmit="return confirm('@AppText.ConfirmDeleteReview')">
                                 @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف"><i class="fas fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center mb-0">لا توجد مراجعات بعد.</p>
+        }
     </div>
 </div>

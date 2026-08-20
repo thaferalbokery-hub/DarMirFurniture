@@ -1,10 +1,10 @@
 @model ProductFilterViewModel
 
 <div class="container py-4">
-    <nav aria-label="breadcrumb">
+    <nav aria-label="مسار التنقل">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li class="breadcrumb-item active">Products</li>
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">@AppText.Home</a></li>
+            <li class="breadcrumb-item active">@AppText.Products</li>
         </ol>
     </nav>
 
@@ -13,16 +13,16 @@
         <div class="col-md-3">
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">Filters</h5>
+                    <h5 class="card-title mb-3">تصفية النتائج</h5>
                     <form asp-controller="Products" asp-action="Index" method="get">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Search</label>
-                            <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control form-control-sm" placeholder="Search..." />
+                            <label class="form-label fw-bold">@AppText.Search</label>
+                            <input type="text" name="SearchTerm" value="@Model.SearchTerm" class="form-control form-control-sm" placeholder="ابحث عن منتج..." />
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Category</label>
+                            <label class="form-label fw-bold">@AppText.Category</label>
                             <select name="CategoryId" class="form-select form-select-sm">
-                                <option value="">All Categories</option>
+                                <option value="">كل الفئات</option>
                                 @foreach (var cat in Model.Categories)
                                 {
                                     <option value="@cat.Id" selected="@(Model.CategoryId == cat.Id)">@cat.Name</option>
@@ -30,9 +30,9 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Brand</label>
+                            <label class="form-label fw-bold">@AppText.Brand</label>
                             <select name="BrandId" class="form-select form-select-sm">
-                                <option value="">All Brands</option>
+                                <option value="">كل العلامات التجارية</option>
                                 @foreach (var brand in Model.Brands)
                                 {
                                     <option value="@brand.Id" selected="@(Model.BrandId == brand.Id)">@brand.Name</option>
@@ -40,28 +40,28 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Price Range</label>
+                            <label class="form-label fw-bold">نطاق السعر (ر.ي)</label>
                             <div class="row g-2">
                                 <div class="col-6">
-                                    <input type="number" name="MinPrice" value="@Model.MinPrice" class="form-control form-control-sm" placeholder="Min" />
+                                    <input type="number" name="MinPrice" value="@Model.MinPrice" class="form-control form-control-sm" placeholder="الأدنى" />
                                 </div>
                                 <div class="col-6">
-                                    <input type="number" name="MaxPrice" value="@Model.MaxPrice" class="form-control form-control-sm" placeholder="Max" />
+                                    <input type="number" name="MaxPrice" value="@Model.MaxPrice" class="form-control form-control-sm" placeholder="الأعلى" />
                                 </div>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Sort By</label>
+                            <label class="form-label fw-bold">الترتيب حسب</label>
                             <select name="SortBy" class="form-select form-select-sm">
-                                <option value="newest" selected="@(Model.SortBy == "newest")">Newest</option>
-                                <option value="price_asc" selected="@(Model.SortBy == "price_asc")">Price: Low to High</option>
-                                <option value="price_desc" selected="@(Model.SortBy == "price_desc")">Price: High to Low</option>
-                                <option value="name" selected="@(Model.SortBy == "name")">Name</option>
-                                <option value="rating" selected="@(Model.SortBy == "rating")">Rating</option>
+                                <option value="newest" selected="@(Model.SortBy == "newest")">الأحدث</option>
+                                <option value="price_asc" selected="@(Model.SortBy == "price_asc")">السعر: من الأقل إلى الأعلى</option>
+                                <option value="price_desc" selected="@(Model.SortBy == "price_desc")">السعر: من الأعلى إلى الأقل</option>
+                                <option value="name" selected="@(Model.SortBy == "name")">الاسم</option>
+                                <option value="rating" selected="@(Model.SortBy == "rating")">التقييم</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-gold w-100">Apply Filters</button>
-                        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">Clear</a>
+                        <button type="submit" class="btn btn-gold w-100">تطبيق التصفية</button>
+                        <a asp-controller="Products" asp-action="Index" class="btn btn-outline-secondary w-100 mt-2">@AppText.Clear</a>
                     </form>
                 </div>
             </div>
@@ -70,7 +70,7 @@
         <!-- Products Grid -->
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <p class="mb-0 text-muted">Showing @Model.Products.Count of @Model.TotalCount products</p>
+                <p class="mb-0 text-muted">عرض @Model.Products.Count من إجمالي @Model.TotalCount منتج</p>
             </div>
 
             @if (Model.Products.Any())
@@ -95,6 +95,8 @@
                                        asp-route-SearchTerm="@Model.SearchTerm"
                                        asp-route-CategoryId="@Model.CategoryId"
                                        asp-route-BrandId="@Model.BrandId"
+                                       asp-route-MinPrice="@Model.MinPrice"
+                                       asp-route-MaxPrice="@Model.MaxPrice"
                                        asp-route-SortBy="@Model.SortBy">@i</a>
                                 </li>
                             }
@@ -106,8 +108,8 @@
             {
                 <div class="text-center py-5">
                     <i class="fas fa-search fa-3x text-muted mb-3"></i>
-                    <h5>No products found</h5>
-                    <p class="text-muted">Try adjusting your filters or search term.</p>
+                    <h5>لا توجد منتجات مطابقة</h5>
+                    <p class="text-muted">جرّب تعديل خيارات التصفية أو كلمة البحث.</p>
                 </div>
             }
         </div>

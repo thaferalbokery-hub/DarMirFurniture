@@ -1,10 +1,10 @@
 @model ProductDetailViewModel
 
 <div class="container py-4">
-    <nav aria-label="breadcrumb">
+    <nav aria-label="مسار التنقل">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li class="breadcrumb-item"><a asp-controller="Products" asp-action="Index">Products</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">@AppText.Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Products" asp-action="Index">@AppText.Products</a></li>
             <li class="breadcrumb-item active">@Model.Name</li>
         </ol>
     </nav>
@@ -23,7 +23,7 @@
                         @foreach (var img in Model.Images)
                         {
                             <div class="col-3">
-                                <img src="@img.ImageUrl" class="img-fluid rounded cursor-pointer thumbnail-img" alt="@img.AltText" onclick="document.getElementById('mainImage').src='@img.ImageUrl'" />
+                                <img src="@img.ImageUrl" class="img-fluid rounded thumbnail-img" alt="@(img.AltText ?? Model.Name)" onclick="document.getElementById('mainImage').src='@img.ImageUrl'" />
                             </div>
                         }
                     </div>
@@ -40,21 +40,21 @@
         <!-- Product Info -->
         <div class="col-md-6">
             <div class="d-flex gap-2 mb-2">
-                @if (Model.IsNew) { <span class="badge bg-success">New</span> }
-                @if (Model.IsFeatured) { <span class="badge bg-warning text-dark">Featured</span> }
-                @if (!Model.IsAvailable) { <span class="badge bg-danger">Out of Stock</span> }
+                @if (Model.IsNew) { <span class="badge bg-success">@AppText.New</span> }
+                @if (Model.IsFeatured) { <span class="badge bg-warning text-dark">@AppText.Featured</span> }
+                @if (!Model.IsAvailable) { <span class="badge bg-danger">@AppText.OutOfStock</span> }
             </div>
 
             <h2 class="fw-bold">@Model.Name</h2>
 
             @if (!string.IsNullOrEmpty(Model.BrandName))
             {
-                <p class="text-muted mb-2">Brand: <strong>@Model.BrandName</strong></p>
+                <p class="text-muted mb-2">@AppText.Brand: <strong>@Model.BrandName</strong></p>
             }
 
             @if (!string.IsNullOrEmpty(Model.CategoryName))
             {
-                <p class="text-muted mb-2">Category: <strong>@Model.CategoryName</strong></p>
+                <p class="text-muted mb-2">@AppText.Category: <strong>@Model.CategoryName</strong></p>
             }
 
             <!-- Rating -->
@@ -65,7 +65,7 @@
                     {
                         <i class="fas fa-star @(i <= Math.Round(Model.AverageRating) ? "text-gold" : "text-muted")"></i>
                     }
-                    <span class="ms-2 text-muted">(@Model.ReviewCount reviews)</span>
+                    <span class="ms-2 text-muted">(@Model.ReviewCount مراجعة)</span>
                 </div>
             }
 
@@ -73,12 +73,12 @@
             <div class="mb-3">
                 @if (Model.DiscountPrice.HasValue && Model.DiscountPrice < Model.Price)
                 {
-                    <h3 class="text-danger fw-bold d-inline">@Model.DiscountPrice?.ToString("N0") SAR</h3>
-                    <span class="text-muted text-decoration-line-through ms-2 fs-5">@Model.Price.ToString("N0") SAR</span>
+                    <h3 class="text-danger fw-bold d-inline price-value">@Model.DiscountPrice.ToYer()</h3>
+                    <span class="text-muted text-decoration-line-through ms-2 fs-5 price-value">@Model.Price.ToYer()</span>
                 }
                 else
                 {
-                    <h3 class="fw-bold d-inline">@Model.Price.ToString("N0") SAR</h3>
+                    <h3 class="fw-bold d-inline price-value">@Model.Price.ToYer()</h3>
                 }
             </div>
 
@@ -87,15 +87,15 @@
             <!-- Details -->
             <div class="card border-0 bg-light mb-3">
                 <div class="card-body">
-                    <h6 class="fw-bold mb-2">Product Details</h6>
+                    <h6 class="fw-bold mb-2">تفاصيل المنتج</h6>
                     <table class="table table-sm table-borderless mb-0">
                         @if (!string.IsNullOrEmpty(Model.Material))
                         {
-                            <tr><td class="text-muted">Material:</td><td>@Model.Material</td></tr>
+                            <tr><td class="text-muted">المادة:</td><td>@Model.Material</td></tr>
                         }
                         @if (!string.IsNullOrEmpty(Model.Color))
                         {
-                            <tr><td class="text-muted">Color:</td><td>@Model.Color</td></tr>
+                            <tr><td class="text-muted">اللون:</td><td>@Model.Color</td></tr>
                         }
                     </table>
                 </div>
@@ -106,12 +106,12 @@
             {
                 <div class="card border-0 bg-light mb-3">
                     <div class="card-body">
-                        <h6 class="fw-bold mb-2">Dimensions</h6>
+                        <h6 class="fw-bold mb-2">الأبعاد</h6>
                         <div class="row text-center">
-                            @if (Model.Width.HasValue) { <div class="col"><small class="text-muted">Width</small><br /><strong>@Model.Width cm</strong></div> }
-                            @if (Model.Height.HasValue) { <div class="col"><small class="text-muted">Height</small><br /><strong>@Model.Height cm</strong></div> }
-                            @if (Model.Depth.HasValue) { <div class="col"><small class="text-muted">Depth</small><br /><strong>@Model.Depth cm</strong></div> }
-                            @if (Model.Weight.HasValue) { <div class="col"><small class="text-muted">Weight</small><br /><strong>@Model.Weight kg</strong></div> }
+                            @if (Model.Width.HasValue) { <div class="col"><small class="text-muted">العرض</small><br /><strong>@Model.Width سم</strong></div> }
+                            @if (Model.Height.HasValue) { <div class="col"><small class="text-muted">الارتفاع</small><br /><strong>@Model.Height سم</strong></div> }
+                            @if (Model.Depth.HasValue) { <div class="col"><small class="text-muted">العمق</small><br /><strong>@Model.Depth سم</strong></div> }
+                            @if (Model.Weight.HasValue) { <div class="col"><small class="text-muted">الوزن</small><br /><strong>@Model.Weight كجم</strong></div> }
                         </div>
                     </div>
                 </div>
@@ -124,37 +124,37 @@
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="productId" value="@Model.Id" />
                     <div class="d-flex gap-2 align-items-center">
-                        <input type="number" name="quantity" value="1" min="1" max="@Model.StockQuantity" class="form-control" style="width:80px;" />
+                        <input type="number" name="quantity" value="1" min="1" max="@Model.StockQuantity" class="form-control" style="width:80px;" aria-label="@AppText.Quantity" />
                         <button type="submit" class="btn btn-gold flex-grow-1">
-                            <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                            <i class="fas fa-cart-plus ms-1 me-2"></i>@AppText.AddToCart
                         </button>
                     </div>
-                    <small class="text-muted">@Model.StockQuantity items in stock</small>
+                    <small class="text-muted">المتوفر بالمخزون: @Model.StockQuantity قطعة</small>
                 </form>
             }
             else
             {
-                <div class="alert alert-warning">This product is currently out of stock.</div>
+                <div class="alert alert-warning">هذا المنتج غير متوفر بالمخزون حالياً.</div>
             }
         </div>
     </div>
 
     <!-- Reviews Section -->
     <div class="mt-5">
-        <h4 class="mb-3">Customer Reviews (@Model.ReviewCount)</h4>
+        <h4 class="mb-3">مراجعات العملاء (@Model.ReviewCount)</h4>
 
         @if (User.Identity?.IsAuthenticated == true)
         {
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-body">
-                    <h6>Write a Review</h6>
+                    <h6>اكتب مراجعتك</h6>
                     <form asp-controller="Products" asp-action="AddReview" method="post">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="ProductId" value="@Model.Id" />
                         <div class="mb-3">
-                            <label class="form-label">Rating</label>
-                            <select name="Rating" class="form-select">
-                                <option value="">Select rating</option>
+                            <label class="form-label">التقييم</label>
+                            <select name="Rating" class="form-select" required>
+                                <option value="">اختر التقييم</option>
                                 <option value="5">★★★★★ (5)</option>
                                 <option value="4">★★★★☆ (4)</option>
                                 <option value="3">★★★☆☆ (3)</option>
@@ -163,10 +163,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Comment</label>
-                            <textarea name="Comment" class="form-control" rows="3" placeholder="Share your experience..."></textarea>
+                            <label class="form-label">التعليق</label>
+                            <textarea name="Comment" class="form-control" rows="3" placeholder="شاركنا تجربتك مع هذا المنتج..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-gold">Submit Review</button>
+                        <button type="submit" class="btn btn-gold">إرسال المراجعة</button>
                     </form>
                 </div>
             </div>
@@ -189,14 +189,14 @@
                                 </div>
                             </div>
                             <div class="text-end">
-                                <small class="text-muted">@review.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                <small class="text-muted numeric-value">@review.CreatedAt.ToString(AppText.DateFormat)</small>
                                 @if (review.IsOwner || User.IsInRole("Admin"))
                                 {
                                     <form asp-controller="Products" asp-action="DeleteReview" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
                                         <input type="hidden" name="reviewId" value="@review.Id" />
                                         <input type="hidden" name="productId" value="@Model.Id" />
-                                        <button type="submit" class="btn btn-sm btn-outline-danger ms-2" onclick="return confirm('Delete this review?')">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger ms-2" onclick="return confirm('@AppText.ConfirmDeleteReview')">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -210,7 +210,7 @@
         }
         else
         {
-            <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+            <p class="text-muted">لا توجد مراجعات بعد. كن أول من يقيّم هذا المنتج!</p>
         }
     </div>
 </div>

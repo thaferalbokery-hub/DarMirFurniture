@@ -1,8 +1,8 @@
 @model List<Product>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Products (@Model.Count)</h4>
-    <a asp-action="Create" class="btn btn-gold"><i class="fas fa-plus me-1"></i>Add Product</a>
+    <h4 class="mb-0">@AppText.Products (@Model.Count)</h4>
+    <a asp-action="Create" class="btn btn-gold"><i class="fas fa-plus ms-1 me-1"></i>إضافة منتج</a>
 </div>
 
 <div class="card border-0 shadow-sm">
@@ -10,14 +10,14 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Brand</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>الصورة</th>
+                    <th>الاسم</th>
+                    <th>@AppText.Category</th>
+                    <th>@AppText.Brand</th>
+                    <th>@AppText.Price</th>
+                    <th>المخزون</th>
+                    <th>@AppText.Status</th>
+                    <th>@AppText.Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +27,7 @@
                         <td>
                             @if (product.ProductImages.Any())
                             {
-                                <img src="@product.ProductImages.First().ImageUrl" class="rounded" style="width:50px;height:50px;object-fit:cover;" />
+                                <img src="@product.ProductImages.First().ImageUrl" class="rounded" style="width:50px;height:50px;object-fit:cover;" alt="@product.Name" />
                             }
                             else
                             {
@@ -38,47 +38,51 @@
                         </td>
                         <td>
                             <strong>@product.Name</strong>
-                            @if (product.IsFeatured) { <span class="badge bg-warning text-dark ms-1">Featured</span> }
-                            @if (product.IsNew) { <span class="badge bg-success ms-1">New</span> }
+                            @if (product.IsFeatured) { <span class="badge bg-warning text-dark ms-1">@AppText.Featured</span> }
+                            @if (product.IsNew) { <span class="badge bg-success ms-1">@AppText.New</span> }
                         </td>
                         <td>@product.Category?.Name</td>
                         <td>@product.Brand?.Name</td>
                         <td>
                             @if (product.DiscountPrice.HasValue)
                             {
-                                <span class="text-decoration-line-through text-muted">@product.Price.ToString("N0")</span>
-                                <br /><span class="text-danger fw-bold">@product.DiscountPrice.Value.ToString("N0") SAR</span>
+                                <span class="text-decoration-line-through text-muted price-value">@product.Price.ToYer()</span>
+                                <br /><span class="text-danger fw-bold price-value">@product.DiscountPrice.ToYer()</span>
                             }
                             else
                             {
-                                <span>@product.Price.ToString("N0") SAR</span>
+                                <span class="price-value">@product.Price.ToYer()</span>
                             }
                         </td>
                         <td>
-                            <span class="@(product.StockQuantity <= product.ReorderLevel ? "text-danger fw-bold" : "")">
+                            <span class="numeric-value @(product.StockQuantity <= product.ReorderLevel ? "text-danger fw-bold" : "")">
                                 @product.StockQuantity
                             </span>
                         </td>
                         <td>
                             @if (product.IsAvailable)
                             {
-                                <span class="badge bg-success">Available</span>
+                                <span class="badge bg-success">@AppText.Available</span>
                             }
                             else
                             {
-                                <span class="badge bg-danger">Unavailable</span>
+                                <span class="badge bg-danger">@AppText.Unavailable</span>
                             }
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></a>
-                            <form asp-action="Delete" asp-route-id="@product.Id" method="post" class="d-inline" onsubmit="return confirm('Are you sure?')">
+                            <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary" title="تعديل"><i class="fas fa-edit"></i></a>
+                            <form asp-action="Delete" asp-route-id="@product.Id" method="post" class="d-inline" onsubmit="return confirm('@AppText.ConfirmDeleteProduct')">
                                 @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="حذف"><i class="fas fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+        @if (!Model.Any())
+        {
+            <p class="text-muted text-center mb-0">لا توجد منتجات بعد.</p>
+        }
     </div>
 </div>

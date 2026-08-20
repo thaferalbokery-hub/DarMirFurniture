@@ -4,8 +4,8 @@
     <div class="col-md-4">
         <div class="card border-0 shadow-sm text-center">
             <div class="card-body">
-                <h3>@Model.TotalCustomers</h3>
-                <small class="text-muted">Total Customers</small>
+                <h3 class="numeric-value">@Model.TotalCustomers</h3>
+                <small class="text-muted">إجمالي العملاء</small>
             </div>
         </div>
     </div>
@@ -14,46 +14,53 @@
 <div class="row g-3">
     <div class="col-md-7">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white"><h6 class="mb-0">Top Customers</h6></div>
+            <div class="card-header bg-white"><h6 class="mb-0">أفضل العملاء</h6></div>
             <div class="card-body">
                 <table class="table table-sm">
-                    <thead><tr><th>Customer</th><th>Email</th><th class="text-center">Orders</th><th class="text-end">Total Spent</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>@AppText.Customer</th>
+                            <th>البريد الإلكتروني</th>
+                            <th class="text-center">@AppText.Orders</th>
+                            <th class="text-end">إجمالي المشتريات</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         @foreach (var c in Model.TopCustomers)
                         {
                             <tr>
                                 <td>@c.CustomerName</td>
-                                <td>@c.Email</td>
-                                <td class="text-center">@c.OrderCount</td>
-                                <td class="text-end">@c.TotalSpent.ToString("N0") SAR</td>
+                                <td class="numeric-value">@c.Email</td>
+                                <td class="text-center numeric-value">@c.OrderCount</td>
+                                <td class="text-end price-value">@c.TotalSpent.ToYer()</td>
                             </tr>
                         }
                     </tbody>
                 </table>
                 @if (!Model.TopCustomers.Any())
                 {
-                    <p class="text-muted text-center">No customer data yet.</p>
+                    <p class="text-muted text-center mb-0">لا توجد بيانات عملاء بعد.</p>
                 }
             </div>
         </div>
     </div>
     <div class="col-md-5">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white"><h6 class="mb-0">Recent Customers</h6></div>
+            <div class="card-header bg-white"><h6 class="mb-0">أحدث العملاء</h6></div>
             <div class="card-body">
                 @foreach (var c in Model.RecentCustomers)
                 {
                     <div class="d-flex justify-content-between mb-2 pb-2 border-bottom">
                         <div>
                             <strong>@c.Name</strong><br />
-                            <small class="text-muted">@c.Email</small>
+                            <small class="text-muted numeric-value">@c.Email</small>
                         </div>
-                        <small class="text-muted">@c.JoinedDate.ToString("MMM dd")</small>
+                        <small class="text-muted numeric-value">@c.JoinedDate.ToString(AppText.DateFormat)</small>
                     </div>
                 }
                 @if (!Model.RecentCustomers.Any())
                 {
-                    <p class="text-muted text-center">No recent customers.</p>
+                    <p class="text-muted text-center mb-0">لا يوجد عملاء جدد.</p>
                 }
             </div>
         </div>
@@ -61,6 +68,6 @@
 </div>
 
 <div class="mt-3">
-    <a asp-action="Sales" class="btn btn-outline-primary me-2"><i class="fas fa-chart-bar me-1"></i>Sales Report</a>
-    <a asp-action="Products" class="btn btn-outline-primary"><i class="fas fa-box me-1"></i>Product Report</a>
+    <a asp-action="Sales" class="btn btn-outline-primary me-2"><i class="fas fa-chart-bar ms-1 me-1"></i>@AppText.SalesReport</a>
+    <a asp-action="Products" class="btn btn-outline-primary"><i class="fas fa-box ms-1 me-1"></i>@AppText.ProductsReport</a>
 </div>

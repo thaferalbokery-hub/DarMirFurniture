@@ -1,0 +1,50 @@
+## ملفات البناء الخاصة بـ .NET
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+out/
+
+## ملفات Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## ملفات Rider
+.idea/
+*.sln.iml
+
+## إعدادات محلية وحساسة (لا تُرفع)
+appsettings.Development.json
+appsettings.Local.json
+*.pubxml
+*.publishsettings
+secrets.json
+
+## قواعد بيانات محلية
+*.mdf
+*.ldf
+*.ndf
+*.db
+*.db-shm
+*.db-wal
+
+## الصور التي يرفعها المستخدمون أثناء التشغيل
+wwwroot/uploads/
+
+## سجلات وملفات مؤقتة
+*.log
+*.tmp
+*.cache
+TestResults/
+
+## نظام التشغيل
+.DS_Store
+Thumbs.db
+desktop.ini

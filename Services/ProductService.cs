@@ -369,6 +369,37 @@ public class ProductService : IProductService
         await _context.SaveChangesAsync();
     }
 
+    public async Task DeleteProductImageAsync(int imageId, int productId)
+    {
+        var image = await _context.ProductImages
+            .FirstOrDefaultAsync(i => i.Id == imageId && i.ProductId == productId);
+
+        if (image == null) return;
+
+        var wasPrimary = image.IsPrimary;
+
+        // Remove the physical file, then the database record
+        await _imageService.DeleteImageAsync(image.ImageUrl);
+        _context.ProductImages.Remove(image);
+        await _context.SaveChangesAsync();
+
+        // Promote another image to primary so the product keeps a main image
+        if (wasPrimary)
+        {
+            var replacement = await _context.ProductImages
+                .Where(i => i.ProductId == productId)
+                .OrderBy(i => i.DisplayOrder)
+                .ThenBy(i => i.Id)
+                .FirstOrDefaultAsync();
+
+            if (replacement != null)
+            {
+                replacement.IsPrimary = true;
+                await _context.SaveChangesAsync();
+            }
+        }
+    }
+
     public async Task<int> GetTotalCountAsync()
     {
         return await _context.Products.CountAsync();

@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +18,8 @@ public class DashboardController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "Admin Dashboard";
-        ViewData["PageTitle"] = "Dashboard";
+        ViewBag.Title = AppText.AdminDashboard;
+        ViewData["PageTitle"] = AppText.Dashboard;
         var dashboard = await _reportService.GetDashboardAsync();
         return View(dashboard);
     }

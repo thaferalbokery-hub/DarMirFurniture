@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -20,7 +21,7 @@ public class OrdersController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "My Orders";
+        ViewBag.Title = AppText.MyOrders;
         var userId = _userManager.GetUserId(User)!;
         var orders = await _orderService.GetUserOrdersAsync(userId);
         return View(orders);
@@ -32,7 +33,7 @@ public class OrdersController : Controller
         var order = await _orderService.GetOrderDetailAsync(id, userId);
         if (order == null) return NotFound();
 
-        ViewBag.Title = $"Order #{order.OrderNumber}";
+        ViewBag.Title = $"الطلب رقم {order.OrderNumber}";
         return View(order);
     }
 }

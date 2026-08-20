@@ -1,13 +1,34 @@
+using System.Globalization;
 using DarMirFurniture.Data;
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Arabic (Yemen) is the default and only culture of the application.
+var defaultCulture = ArabicCulture.Create();
+CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Configure request localization so every request runs under Arabic (Yemen).
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new List<CultureInfo> { defaultCulture };
+    options.DefaultRequestCulture = new RequestCulture(defaultCulture, defaultCulture);
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+    // No culture providers: the application is Arabic-only and must never
+    // fall back to the browser language.
+    options.RequestCultureProviders.Clear();
+});
 
 // Configure Entity Framework Core with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -24,7 +45,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
-.AddDefaultTokenProviders();
+.AddDefaultTokenProviders()
+.AddErrorDescriber<ArabicIdentityErrorDescriber>();
 
 // Configure cookie settings
 builder.Services.ConfigureApplicationCookie(options =>
@@ -58,7 +80,7 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while seeding the database.");
+        logger.LogError(ex, "حدث خطأ أثناء تهيئة قاعدة البيانات.");
     }
 }
 
@@ -71,6 +93,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseRequestLocalization();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

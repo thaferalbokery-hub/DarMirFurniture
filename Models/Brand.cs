@@ -9,22 +9,22 @@ public class Brand
 
     [Required(ErrorMessage = "اسم العلامة التجارية مطلوب")]
     [StringLength(100)]
-    [Display(Name = "Brand Name")]
+    [Display(Name = "اسم العلامة التجارية")]
     public string Name { get; set; } = string.Empty;
 
     [StringLength(500)]
-    [Display(Name = "Description")]
+    [Display(Name = "الوصف")]
     public string? Description { get; set; }
 
-    [Display(Name = "Logo")]
+    [Display(Name = "الشعار")]
     public string? LogoUrl { get; set; }
 
-    [Url]
+    [Url(ErrorMessage = "رابط الموقع غير صالح")]
     [StringLength(200)]
-    [Display(Name = "Website")]
+    [Display(Name = "الموقع الإلكتروني")]
     public string? Website { get; set; }
 
-    [Display(Name = "Is Active")]
+    [Display(Name = "مفعّل")]
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

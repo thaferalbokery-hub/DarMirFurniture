@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +18,8 @@ public class ReviewsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "Manage Reviews";
-        ViewData["PageTitle"] = "Reviews";
+        ViewBag.Title = AppText.ManageReviews;
+        ViewData["PageTitle"] = AppText.Reviews;
         var reviews = await _reviewService.GetAllReviewsAsync();
         return View(reviews);
     }
@@ -28,7 +29,7 @@ public class ReviewsController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         await _reviewService.DeleteReviewAsync(id, "", isAdmin: true);
-        TempData["Success"] = "تم حذف المراجعة بنجاح";
+        TempData["Success"] = AppText.ReviewDeleted;
         return RedirectToAction(nameof(Index));
     }
 }

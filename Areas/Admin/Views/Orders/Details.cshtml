@@ -4,26 +4,31 @@
     <div class="col-md-8">
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
-                <h5 class="fw-bold mb-3">Order Items</h5>
+                <h5 class="fw-bold mb-3">منتجات الطلب</h5>
                 <table class="table table-sm">
                     <thead>
-                        <tr><th>Product</th><th class="text-center">Qty</th><th class="text-end">Price</th><th class="text-end">Subtotal</th></tr>
+                        <tr>
+                            <th>@AppText.Product</th>
+                            <th class="text-center">@AppText.Quantity</th>
+                            <th class="text-end">@AppText.Price</th>
+                            <th class="text-end">@AppText.Subtotal</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.OrderItems)
                         {
                             <tr>
                                 <td>@item.ProductName</td>
-                                <td class="text-center">@item.Quantity</td>
-                                <td class="text-end">@item.UnitPrice.ToString("N0") SAR</td>
-                                <td class="text-end">@item.Subtotal.ToString("N0") SAR</td>
+                                <td class="text-center numeric-value">@item.Quantity</td>
+                                <td class="text-end price-value">@item.UnitPrice.ToYer()</td>
+                                <td class="text-end price-value">@item.Subtotal.ToYer()</td>
                             </tr>
                         }
                     </tbody>
                     <tfoot>
-                        <tr><td colspan="3" class="text-end">Subtotal:</td><td class="text-end">@Model.Subtotal.ToString("N0") SAR</td></tr>
-                        <tr><td colspan="3" class="text-end">Shipping:</td><td class="text-end">@(Model.ShippingCost == 0 ? "Free" : $"{Model.ShippingCost:N0} SAR")</td></tr>
-                        <tr class="fw-bold"><td colspan="3" class="text-end">Total:</td><td class="text-end">@Model.Total.ToString("N0") SAR</td></tr>
+                        <tr><td colspan="3" class="text-end">@AppText.Subtotal:</td><td class="text-end price-value">@Model.Subtotal.ToYer()</td></tr>
+                        <tr><td colspan="3" class="text-end">@AppText.Shipping:</td><td class="text-end price-value">@CurrencySettings.FormatShipping(Model.ShippingCost)</td></tr>
+                        <tr class="fw-bold"><td colspan="3" class="text-end">@AppText.Total:</td><td class="text-end price-value">@Model.Total.ToYer()</td></tr>
                     </tfoot>
                 </table>
             </div>
@@ -32,46 +37,46 @@
     <div class="col-md-4">
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
-                <h6 class="fw-bold mb-3">Order Info</h6>
-                <p><strong>Order #:</strong> @Model.OrderNumber</p>
-                <p><strong>Date:</strong> @Model.OrderDate.ToString("MMM dd, yyyy HH:mm")</p>
-                <p><strong>Status:</strong> <span class="badge bg-secondary">@Model.Status</span></p>
+                <h6 class="fw-bold mb-3">معلومات الطلب</h6>
+                <p><strong>@AppText.OrderNumber:</strong> @Model.OrderNumber</p>
+                <p><strong>@AppText.Date:</strong> <span class="numeric-value">@Model.OrderDate.ToString(AppText.DateTimeFormat)</span></p>
+                <p><strong>@AppText.Status:</strong> <span class="badge @Model.Status.BadgeClass()">@Model.Status.ToArabic()</span></p>
             </div>
         </div>
         <div class="card border-0 shadow-sm mb-3">
             <div class="card-body">
-                <h6 class="fw-bold mb-3">Customer Info</h6>
-                <p><strong>Name:</strong> @Model.FullName</p>
-                <p><strong>Phone:</strong> @Model.Phone</p>
-                <p><strong>City:</strong> @Model.City</p>
-                <p><strong>Address:</strong> @Model.Address</p>
+                <h6 class="fw-bold mb-3">معلومات العميل</h6>
+                <p><strong>الاسم:</strong> @Model.FullName</p>
+                <p><strong>الهاتف:</strong> <span class="numeric-value">@Model.Phone</span></p>
+                <p><strong>المدينة:</strong> @Model.City</p>
+                <p><strong>العنوان:</strong> @Model.Address</p>
                 @if (!string.IsNullOrEmpty(Model.ShippingAddress))
                 {
-                    <p><strong>Shipping:</strong> @Model.ShippingAddress</p>
+                    <p><strong>عنوان الشحن:</strong> @Model.ShippingAddress</p>
                 }
                 @if (!string.IsNullOrEmpty(Model.Notes))
                 {
-                    <p><strong>Notes:</strong> @Model.Notes</p>
+                    <p><strong>ملاحظات:</strong> @Model.Notes</p>
                 }
             </div>
         </div>
         <div class="card border-0 shadow-sm">
             <div class="card-body">
-                <h6 class="fw-bold mb-3">Update Status</h6>
+                <h6 class="fw-bold mb-3">تحديث حالة الطلب</h6>
                 <form asp-action="UpdateStatus" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="orderId" value="@Model.Id" />
                     <select name="status" class="form-select mb-2">
                         @foreach (var status in Enum.GetValues<OrderStatus>())
                         {
-                            <option value="@status" selected="@(Model.Status == status)">@status</option>
+                            <option value="@status" selected="@(Model.Status == status)">@status.ToArabic()</option>
                         }
                     </select>
-                    <button type="submit" class="btn btn-gold w-100">Update Status</button>
+                    <button type="submit" class="btn btn-gold w-100">تحديث الحالة</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<a asp-action="Index" class="btn btn-outline-secondary mt-3"><i class="fas fa-arrow-left me-1"></i>Back to Orders</a>
+<a asp-action="Index" class="btn btn-outline-secondary mt-3"><i class="fas fa-arrow-left ms-1 me-1"></i>العودة إلى الطلبات</a>

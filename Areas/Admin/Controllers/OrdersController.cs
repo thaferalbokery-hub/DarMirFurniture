@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -18,8 +19,8 @@ public class OrdersController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "Manage Orders";
-        ViewData["PageTitle"] = "Orders";
+        ViewBag.Title = AppText.ManageOrders;
+        ViewData["PageTitle"] = AppText.Orders;
         var orders = await _orderService.GetAllOrdersAsync();
         return View(orders);
     }
@@ -29,8 +30,8 @@ public class OrdersController : Controller
         var order = await _orderService.GetOrderDetailAsync(id);
         if (order == null) return NotFound();
 
-        ViewBag.Title = $"Order #{order.OrderNumber}";
-        ViewData["PageTitle"] = $"Order #{order.OrderNumber}";
+        ViewBag.Title = $"الطلب رقم {order.OrderNumber}";
+        ViewData["PageTitle"] = $"الطلب رقم {order.OrderNumber}";
         return View(order);
     }
 
@@ -39,7 +40,7 @@ public class OrdersController : Controller
     public async Task<IActionResult> UpdateStatus(int orderId, OrderStatus status)
     {
         await _orderService.UpdateOrderStatusAsync(orderId, status);
-        TempData["Success"] = "تم تحديث حالة الطلب بنجاح";
+        TempData["Success"] = AppText.OrderStatusUpdated;
         return RedirectToAction(nameof(Details), new { id = orderId });
     }
 }

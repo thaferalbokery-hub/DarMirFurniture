@@ -6,6 +6,7 @@
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="CreatedAt" />
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -16,6 +17,7 @@
                     <div class="mb-3">
                         <label asp-for="Description" class="form-label"></label>
                         <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-check mb-3">
                         <input asp-for="IsActive" class="form-check-input" />
@@ -24,21 +26,26 @@
                     @if (!string.IsNullOrEmpty(Model.LogoUrl))
                     {
                         <div class="mb-3">
-                            <label class="form-label">Current Logo</label><br />
-                            <img src="@Model.LogoUrl" class="rounded" style="max-width:100px;" />
+                            <label class="form-label">الشعار الحالي</label><br />
+                            <img src="@Model.LogoUrl" class="rounded" style="max-width:100px;" alt="@Model.Name" />
                             <input type="hidden" asp-for="LogoUrl" />
                         </div>
                     }
                     <div class="mb-3">
-                        <label class="form-label">New Logo</label>
+                        <label class="form-label">شعار جديد</label>
                         <input type="file" name="logo" class="form-control" accept="image/*" />
+                        <small class="text-muted">اتركه فارغاً للإبقاء على الشعار الحالي.</small>
                     </div>
                 </div>
             </div>
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-gold"><i class="fas fa-save me-1"></i>Update</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-gold"><i class="fas fa-save ms-1 me-1"></i>@AppText.Update</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">@AppText.Cancel</a>
             </div>
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

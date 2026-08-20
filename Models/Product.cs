@@ -10,70 +10,70 @@ public class Product
 
     [Required(ErrorMessage = "اسم المنتج مطلوب")]
     [StringLength(200)]
-    [Display(Name = "Product Name")]
+    [Display(Name = "اسم المنتج")]
     public string Name { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "وصف المنتج مطلوب")]
     [StringLength(2000)]
-    [Display(Name = "Description")]
+    [Display(Name = "الوصف")]
     public string Description { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "السعر مطلوب")]
-    [Range(0.01, 999999.99, ErrorMessage = "السعر يجب أن يكون بين 0.01 و 999999.99")]
+    [Range(0.01, 99999999.99, ErrorMessage = "السعر يجب أن يكون بين 0.01 و 99,999,999.99 ريال يمني")]
     [Column(TypeName = "decimal(18,2)")]
-    [Display(Name = "Price")]
+    [Display(Name = "السعر (ر.ي)")]
     public decimal Price { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]
-    [Display(Name = "Discount Price")]
+    [Display(Name = "سعر الخصم (ر.ي)")]
     public decimal? DiscountPrice { get; set; }
 
     [StringLength(100)]
-    [Display(Name = "Material")]
+    [Display(Name = "المادة")]
     public string? Material { get; set; }
 
     [StringLength(100)]
-    [Display(Name = "Color")]
+    [Display(Name = "اللون")]
     public string? Color { get; set; }
 
     // Dimensions
-    [Display(Name = "Width (cm)")]
+    [Display(Name = "العرض (سم)")]
     public double? Width { get; set; }
 
-    [Display(Name = "Height (cm)")]
+    [Display(Name = "الارتفاع (سم)")]
     public double? Height { get; set; }
 
-    [Display(Name = "Depth (cm)")]
+    [Display(Name = "العمق (سم)")]
     public double? Depth { get; set; }
 
-    [Display(Name = "Weight (kg)")]
+    [Display(Name = "الوزن (كجم)")]
     public double? Weight { get; set; }
 
     // Stock
     [Required]
     [Range(0, int.MaxValue)]
-    [Display(Name = "Stock Quantity")]
+    [Display(Name = "الكمية بالمخزون")]
     public int StockQuantity { get; set; }
 
     [Range(0, int.MaxValue)]
-    [Display(Name = "Reorder Level")]
+    [Display(Name = "حد إعادة الطلب")]
     public int ReorderLevel { get; set; } = 10;
 
     // Foreign Keys
-    [Display(Name = "Category")]
+    [Display(Name = "الفئة")]
     public int? CategoryId { get; set; }
 
-    [Display(Name = "Brand")]
+    [Display(Name = "العلامة التجارية")]
     public int? BrandId { get; set; }
 
     // Status flags
-    [Display(Name = "Is Available")]
+    [Display(Name = "متوفر")]
     public bool IsAvailable { get; set; } = true;
 
-    [Display(Name = "Is Featured")]
+    [Display(Name = "منتج مميز")]
     public bool IsFeatured { get; set; }
 
-    [Display(Name = "Is New")]
+    [Display(Name = "منتج جديد")]
     public bool IsNew { get; set; } = true;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

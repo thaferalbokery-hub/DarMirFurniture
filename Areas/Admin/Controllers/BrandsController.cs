@@ -1,3 +1,4 @@
+using DarMirFurniture.Localization;
 using DarMirFurniture.Models;
 using DarMirFurniture.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -20,16 +21,16 @@ public class BrandsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        ViewBag.Title = "Manage Brands";
-        ViewData["PageTitle"] = "Brands";
+        ViewBag.Title = AppText.ManageBrands;
+        ViewData["PageTitle"] = AppText.Brands;
         var brands = await _brandService.GetAllAsync();
         return View(brands);
     }
 
     public IActionResult Create()
     {
-        ViewBag.Title = "Create Brand";
-        ViewData["PageTitle"] = "Create Brand";
+        ViewBag.Title = AppText.CreateBrand;
+        ViewData["PageTitle"] = AppText.CreateBrand;
         return View(new Brand());
     }
 
@@ -37,7 +38,12 @@ public class BrandsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Brand brand, IFormFile? logo)
     {
-        if (!ModelState.IsValid) return View(brand);
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Title = AppText.CreateBrand;
+            ViewData["PageTitle"] = AppText.CreateBrand;
+            return View(brand);
+        }
 
         if (logo != null && _imageService.IsValidImage(logo))
         {
@@ -45,7 +51,7 @@ public class BrandsController : Controller
         }
 
         await _brandService.CreateAsync(brand);
-        TempData["Success"] = "تم إنشاء العلامة التجارية بنجاح";
+        TempData["Success"] = AppText.BrandCreated;
         return RedirectToAction(nameof(Index));
     }
 
@@ -54,8 +60,8 @@ public class BrandsController : Controller
         var brand = await _brandService.GetByIdAsync(id);
         if (brand == null) return NotFound();
 
-        ViewBag.Title = "Edit Brand";
-        ViewData["PageTitle"] = "Edit Brand";
+        ViewBag.Title = AppText.EditBrand;
+        ViewData["PageTitle"] = AppText.EditBrand;
         return View(brand);
     }
 
@@ -63,7 +69,12 @@ public class BrandsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(Brand brand, IFormFile? logo)
     {
-        if (!ModelState.IsValid) return View(brand);
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Title = AppText.EditBrand;
+            ViewData["PageTitle"] = AppText.EditBrand;
+            return View(brand);
+        }
 
         if (logo != null && _imageService.IsValidImage(logo))
         {
@@ -73,7 +84,7 @@ public class BrandsController : Controller
         }
 
         await _brandService.UpdateAsync(brand);
-        TempData["Success"] = "تم تحديث العلامة التجارية بنجاح";
+        TempData["Success"] = AppText.BrandUpdated;
         return RedirectToAction(nameof(Index));
     }
 
@@ -82,7 +93,7 @@ public class BrandsController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         await _brandService.DeleteAsync(id);
-        TempData["Success"] = "تم حذف العلامة التجارية بنجاح";
+        TempData["Success"] = AppText.BrandDeleted;
         return RedirectToAction(nameof(Index));
     }
 }
